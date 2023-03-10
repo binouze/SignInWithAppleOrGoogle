@@ -4,9 +4,9 @@ namespace com.binouze
 {
     public class SignInWithAppleOrGoogleSettings : ScriptableObject
     {
-        public const string SignInWithAppleOrGoogleSettingsFile   = "SignInWithAppleOrGoogleSettings";
-        public const string AdImplementationSettingsResDir        = "Assets/SignInWithAppleOrGoogle/Resources";
-        public const string AdImplementationSettingsFileExtension = ".asset";
+        public const string SignInWithAppleOrGoogleSettingsFile          = "SignInWithAppleOrGoogleSettings";
+        public const string SignInWithAppleOrGoogleSettingsResDir        = "Assets/LagoonPlugins/SignInWithAppleOrGoogle/Resources";
+        public const string SignInWithAppleOrGoogleSettingsFileExtension = ".asset";
 
         public static SignInWithAppleOrGoogleSettings LoadInstance()
         {

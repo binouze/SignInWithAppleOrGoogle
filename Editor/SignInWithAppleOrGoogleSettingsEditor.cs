@@ -14,13 +14,15 @@ namespace com.binouze
 
         public static SignInWithAppleOrGoogleSettings LoadSettingsInstance()
         {
+            PrebuildScript.PrepareProjectFolders();
+            
             var instance = SignInWithAppleOrGoogleSettings.LoadInstance();
             // Create instance if null.
             if( instance == null )
             {
-                Directory.CreateDirectory(SignInWithAppleOrGoogleSettings.AdImplementationSettingsResDir);
+                Directory.CreateDirectory(SignInWithAppleOrGoogleSettings.SignInWithAppleOrGoogleSettingsResDir);
                 instance = CreateInstance<SignInWithAppleOrGoogleSettings>();
-                var assetPath = Path.Combine( SignInWithAppleOrGoogleSettings.AdImplementationSettingsResDir, SignInWithAppleOrGoogleSettings.SignInWithAppleOrGoogleSettingsFile + SignInWithAppleOrGoogleSettings.AdImplementationSettingsFileExtension);
+                var assetPath = Path.Combine( SignInWithAppleOrGoogleSettings.SignInWithAppleOrGoogleSettingsResDir, SignInWithAppleOrGoogleSettings.SignInWithAppleOrGoogleSettingsFile + SignInWithAppleOrGoogleSettings.SignInWithAppleOrGoogleSettingsFileExtension);
                 AssetDatabase.CreateAsset(instance, assetPath);
                 AssetDatabase.SaveAssets();
             }
