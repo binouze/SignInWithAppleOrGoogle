@@ -34,7 +34,12 @@ namespace com.binouze
 
             if( !AssetDatabase.IsValidFolder("Assets/LagoonPlugins/SignInWithAppleOrGoogle") )
             {
-                AssetDatabase.CreateFolder("Assets/LagoonPlugins", "AdImplSignInWithAppleOrGoogleementation");
+                AssetDatabase.CreateFolder("Assets/LagoonPlugins", "SignInWithAppleOrGoogle");
+            }
+            
+            if( !AssetDatabase.IsValidFolder("Assets/LagoonPlugins/SignInWithAppleOrGoogle/Resources") )
+            {
+                AssetDatabase.CreateFolder("Assets/LagoonPlugins/SignInWithAppleOrGoogle", "Resources");
             }
         }
     }
