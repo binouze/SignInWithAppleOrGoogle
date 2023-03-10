@@ -39,6 +39,8 @@ namespace com.binouze
             IsConnected        = false;
             IsSilentSignIn     = false;
             IsSilentSignInOnly = true;
+            OnSignInResponse   = null;
+            
             GoogleSignIn.GetInstance().CloseDialog();
         }
 

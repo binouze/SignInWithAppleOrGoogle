@@ -27,7 +27,7 @@ namespace com.binouze
             return instance;
         }
         
-        [MenuItem("AdImplementation/Settings...")]
+        [MenuItem("LagoonPlugins/SignInWithAppleOrGoogle Settings")]
         public static void OpenInspector()
         {
             Selection.activeObject = LoadSettingsInstance();
