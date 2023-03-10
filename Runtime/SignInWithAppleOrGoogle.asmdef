@@ -1,6 +1,9 @@
 {
-    "name": "com.binouze.GoogleUserMessagingPlatform",
+    "name": "SignInWithAppleOrGoogle",
     "rootNamespace": "",
+    "references": [
+        "AppleAuth"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
