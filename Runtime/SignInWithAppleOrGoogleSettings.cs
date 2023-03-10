@@ -17,9 +17,11 @@ namespace com.binouze
         public bool IsValide()
         {
             return
-                !string.IsNullOrEmpty( _URL_APPLECONNECT_REDIRECT )   &&
-                !string.IsNullOrEmpty( _SignInWithGoogleWebClientID ) &&
-                !string.IsNullOrEmpty( _SignInWithGoogleClientID );
+                !string.IsNullOrEmpty( _URL_APPLECONNECT_REDIRECT )           &&
+                !string.IsNullOrEmpty( _SignInWithGoogleWebClientID_Android ) &&
+                !string.IsNullOrEmpty( _SignInWithGoogleClientID_Android )    &&
+                !string.IsNullOrEmpty( _SignInWithGoogleWebClientID_ios )    &&
+                !string.IsNullOrEmpty( _SignInWithGoogleClientID_ios );
         }
         
         // -- APPLE
@@ -28,15 +30,20 @@ namespace com.binouze
         private string _URL_APPLECONNECT_REDIRECT = string.Empty;
 
         
-        // -- GOOGLE
+        // -- GOOGLE IOS
         
         [SerializeField]
-        private string _SignInWithGoogleWebClientID = string.Empty;
+        private string _SignInWithGoogleWebClientID_ios = string.Empty;
+        [SerializeField]
+        private string _SignInWithGoogleClientID_ios;
 
         
+        // -- GOOGLE ANDROID
+        
         [SerializeField]
-        private string _SignInWithGoogleClientID;
-
+        private string _SignInWithGoogleWebClientID_Android = string.Empty;
+        [SerializeField]
+        private string _SignInWithGoogleClientID_Android;
         
         public string URL_APPLECONNECT_REDIRECT
         {
@@ -44,16 +51,28 @@ namespace com.binouze
             set => _URL_APPLECONNECT_REDIRECT = value;
         }
 
-        public string SignInWithGoogleWebClientID
+        public string SignInWithGoogleWebClientID_ios
         {
-            get => _SignInWithGoogleWebClientID;
-            set => _SignInWithGoogleWebClientID = value;
+            get => _SignInWithGoogleWebClientID_ios;
+            set => _SignInWithGoogleWebClientID_ios = value;
         }
         
-        public string SignInWithGoogleClientID
+        public string SignInWithGoogleClientID_ios
         {
-            get => _SignInWithGoogleClientID;
-            set => _SignInWithGoogleClientID = value;
+            get => _SignInWithGoogleClientID_ios;
+            set => _SignInWithGoogleClientID_ios = value;
+        }
+        
+        public string SignInWithGoogleWebClientID_Android
+        {
+            get => _SignInWithGoogleWebClientID_Android;
+            set => _SignInWithGoogleWebClientID_Android = value;
+        }
+        
+        public string SignInWithGoogleClientID_Android
+        {
+            get => _SignInWithGoogleClientID_Android;
+            set => _SignInWithGoogleClientID_Android = value;
         }
     }
 }

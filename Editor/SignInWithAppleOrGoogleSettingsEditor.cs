@@ -9,8 +9,12 @@ namespace com.binouze
     public class SignInWithAppleOrGoogleSettingsEditor : Editor
     {
         private SerializedProperty _URL_APPLECONNECT_REDIRECT;
-        private SerializedProperty _SignInWithGoogleWebClientID;
-        private SerializedProperty _SignInWithGoogleClientID;
+        
+        private SerializedProperty _SignInWithGoogleWebClientID_Android;
+        private SerializedProperty _SignInWithGoogleClientID_Android;
+        
+        private SerializedProperty _SignInWithGoogleWebClientID_ios;
+        private SerializedProperty _SignInWithGoogleClientID_ios;
 
         public static SignInWithAppleOrGoogleSettings LoadSettingsInstance()
         {
@@ -38,8 +42,12 @@ namespace com.binouze
         public void OnEnable()
         {
             _URL_APPLECONNECT_REDIRECT   = serializedObject.FindProperty("_URL_APPLECONNECT_REDIRECT");
-            _SignInWithGoogleWebClientID = serializedObject.FindProperty("_SignInWithGoogleWebClientID");
-            _SignInWithGoogleClientID    = serializedObject.FindProperty("_SignInWithGoogleClientID");
+            
+            _SignInWithGoogleWebClientID_Android = serializedObject.FindProperty("_SignInWithGoogleWebClientID_Android");
+            _SignInWithGoogleClientID_Android    = serializedObject.FindProperty("_SignInWithGoogleClientID_Android");
+            
+            _SignInWithGoogleWebClientID_ios = serializedObject.FindProperty("_SignInWithGoogleWebClientID_ios");
+            _SignInWithGoogleClientID_ios    = serializedObject.FindProperty("_SignInWithGoogleClientID_ios");
         }
 
         public override void OnInspectorGUI()
@@ -73,8 +81,18 @@ namespace com.binouze
             EditorGUILayout.LabelField("SignIn with Google configuration", EditorStyles.boldLabel);
             
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_SignInWithGoogleWebClientID, new GUIContent("Web Client ID"));
-            EditorGUILayout.PropertyField(_SignInWithGoogleClientID,    new GUIContent("Client ID"));
+            EditorGUILayout.LabelField("Android", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(_SignInWithGoogleWebClientID_Android, new GUIContent("Web Client ID"));
+            EditorGUILayout.PropertyField(_SignInWithGoogleClientID_Android,    new GUIContent("Client ID"));
+            EditorGUI.indentLevel--;
+            
+            EditorGUILayout.LabelField("iOS", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(_SignInWithGoogleWebClientID_ios, new GUIContent("Web Client ID"));
+            EditorGUILayout.PropertyField(_SignInWithGoogleClientID_ios,    new GUIContent("Client ID"));
+            EditorGUI.indentLevel--;
+            
             EditorGUI.indentLevel--;
             
             EditorGUILayout.Separator();
