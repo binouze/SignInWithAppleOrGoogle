@@ -76,6 +76,11 @@ namespace com.binouze
         // -- APPLE
 
         /// <summary>
+        /// Supported status of the plugin, on old iOS devices the sign in with Apple does not work
+        /// </summary>
+        public static bool Apple_Supported => SignInWithApple.IsSupported;
+        
+        /// <summary>
         /// Launch Apple sign in process
         /// </summary>
         /// <param name="OnComplete"></param>
