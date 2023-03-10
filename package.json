@@ -1,0 +1,13 @@
+{
+  "name": "com.binouze.signinwithappleorgoogle",
+  "version": "0.0.1",
+  "unity": "2021.3",
+  "displayName": "SignInWithAppleOrGoogle",
+  "description": "SignIn with Google or Apple Account for iOS and Android\n.",
+  "changelogUrl": "https://github.com/binouze/SignInWithAppleOrGoogle/releases",
+  "documentationUrl": "https://github.com/binouze/SignInWithAppleOrGoogle",
+  "author": {
+    "name": "Benjamin BOUFFIER",
+    "email": "benjamin.bouffier@gmail.com"
+  }
+}
