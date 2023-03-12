@@ -10,11 +10,9 @@ namespace com.binouze
     {
         private SerializedProperty _URL_APPLECONNECT_REDIRECT;
         
-        private SerializedProperty _SignInWithGoogleWebClientID_Android;
-        private SerializedProperty _SignInWithGoogleClientID_Android;
-        
-        private SerializedProperty _SignInWithGoogleWebClientID_ios;
-        private SerializedProperty _SignInWithGoogleClientID_ios;
+        private SerializedProperty _Google_WebClientID;
+        private SerializedProperty _Google_IosClientID;
+        private SerializedProperty _Google_IosClientScheme;
 
         public static SignInWithAppleOrGoogleSettings LoadSettingsInstance()
         {
@@ -43,11 +41,9 @@ namespace com.binouze
         {
             _URL_APPLECONNECT_REDIRECT   = serializedObject.FindProperty("_URL_APPLECONNECT_REDIRECT");
             
-            _SignInWithGoogleWebClientID_Android = serializedObject.FindProperty("_SignInWithGoogleWebClientID_Android");
-            _SignInWithGoogleClientID_Android    = serializedObject.FindProperty("_SignInWithGoogleClientID_Android");
-            
-            _SignInWithGoogleWebClientID_ios = serializedObject.FindProperty("_SignInWithGoogleWebClientID_ios");
-            _SignInWithGoogleClientID_ios    = serializedObject.FindProperty("_SignInWithGoogleClientID_ios");
+            _Google_WebClientID     = serializedObject.FindProperty("_Google_WebClientID");
+            _Google_IosClientID     = serializedObject.FindProperty("_Google_IosClientID");
+            _Google_IosClientScheme = serializedObject.FindProperty("_Google_IosClientScheme");
         }
 
         public override void OnInspectorGUI()
@@ -81,30 +77,19 @@ namespace com.binouze
             EditorGUILayout.LabelField("SignIn with Google configuration", EditorStyles.boldLabel);
             
             EditorGUI.indentLevel++;
-            EditorGUILayout.LabelField("Android", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_SignInWithGoogleWebClientID_Android, new GUIContent("Web Client ID"));
-            EditorGUILayout.PropertyField(_SignInWithGoogleClientID_Android,    new GUIContent("Client ID"));
-            EditorGUI.indentLevel--;
+            EditorGUILayout.PropertyField(_Google_WebClientID,     new GUIContent("Web Client ID"));
+            EditorGUILayout.PropertyField(_Google_IosClientID,     new GUIContent(" iOS Client ID"));
             
-            EditorGUILayout.LabelField("iOS", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_SignInWithGoogleWebClientID_ios, new GUIContent("Web Client ID"));
-            EditorGUILayout.PropertyField(_SignInWithGoogleClientID_ios,    new GUIContent("Client ID"));
-            EditorGUI.indentLevel--;
-            
+            EditorGUI.BeginDisabledGroup( true );
+            EditorGUILayout.PropertyField(_Google_IosClientScheme, new GUIContent("iOS Scheme"));
+            EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
             
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
 
-            /*if( GUILayout.Button("Run Pre-Build Script") )
-            {
-                AdsPrebuildScript.CopyAssetsIntoProject();
-            }*/
-            
             EditorGUILayout.Separator();
-            
+
             serializedObject.ApplyModifiedProperties();
         }
     }

@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 
 namespace com.binouze
@@ -17,11 +18,10 @@ namespace com.binouze
         public bool IsValide()
         {
             return
-                !string.IsNullOrEmpty( _URL_APPLECONNECT_REDIRECT )           &&
-                !string.IsNullOrEmpty( _SignInWithGoogleWebClientID_Android ) &&
-                !string.IsNullOrEmpty( _SignInWithGoogleClientID_Android )    &&
-                !string.IsNullOrEmpty( _SignInWithGoogleWebClientID_ios )    &&
-                !string.IsNullOrEmpty( _SignInWithGoogleClientID_ios );
+                !string.IsNullOrEmpty( _URL_APPLECONNECT_REDIRECT ) &&
+                !string.IsNullOrEmpty( _Google_WebClientID )        &&
+                !string.IsNullOrEmpty( _Google_IosClientID )        &&
+                !string.IsNullOrEmpty( _Google_IosClientScheme );
         }
         
         // -- APPLE
@@ -30,20 +30,18 @@ namespace com.binouze
         private string _URL_APPLECONNECT_REDIRECT = string.Empty;
 
         
-        // -- GOOGLE IOS
+        //TODO1 maj fields: WebClientID + iOSClientID
+        //TODO1 add fields iosScheme auto generated (inverser le client ID) + Prebuild script pour ajouter le scheme aux PlayerSettings.iOS.iOSUrlSchemes
+        
+        // -- GOOGLE
         
         [SerializeField]
-        private string _SignInWithGoogleWebClientID_ios = string.Empty;
+        private string _Google_WebClientID = string.Empty;
         [SerializeField]
-        private string _SignInWithGoogleClientID_ios;
+        private string _Google_IosClientID;
+        [SerializeField]
+        private string _Google_IosClientScheme;
 
-        
-        // -- GOOGLE ANDROID
-        
-        [SerializeField]
-        private string _SignInWithGoogleWebClientID_Android = string.Empty;
-        [SerializeField]
-        private string _SignInWithGoogleClientID_Android;
         
         public string URL_APPLECONNECT_REDIRECT
         {
@@ -51,28 +49,48 @@ namespace com.binouze
             set => _URL_APPLECONNECT_REDIRECT = value;
         }
 
-        public string SignInWithGoogleWebClientID_ios
+        public string Google_WebClientID
         {
-            get => _SignInWithGoogleWebClientID_ios;
-            set => _SignInWithGoogleWebClientID_ios = value;
+            get => _Google_WebClientID;
+            set => _Google_WebClientID = value;
         }
         
-        public string SignInWithGoogleClientID_ios
+        public string Google_IosClientID
         {
-            get => _SignInWithGoogleClientID_ios;
-            set => _SignInWithGoogleClientID_ios = value;
+            get => _Google_IosClientID;
+            set => _Google_IosClientID = value;
         }
         
-        public string SignInWithGoogleWebClientID_Android
+        public string Google_IosClientScheme
         {
-            get => _SignInWithGoogleWebClientID_Android;
-            set => _SignInWithGoogleWebClientID_Android = value;
+            get => _Google_IosClientScheme;
+            set => _Google_IosClientScheme = value;
         }
-        
-        public string SignInWithGoogleClientID_Android
+
+        private string GetIosScheme()
         {
-            get => _SignInWithGoogleClientID_Android;
-            set => _SignInWithGoogleClientID_Android = value;
+            if( !string.IsNullOrWhiteSpace( Google_IosClientID ) )
+            {
+                var ex = Google_IosClientID.Split( "." );
+                if( ex.Length >= 2 )
+                {
+                    // recuperer le dernier element qui ira au debut
+                    var last = ex[^1];
+                    // supprimer le dernier element de la liste
+                    ex = ex[..^1];
+                    // reformer le string avec le premier element suivi des autres
+                    return $"{last}."+string.Join( '.', ex );
+                }
+            }
+
+            return string.Empty;
+        }
+
+
+        private string saved_Google_IosClientScheme;
+        void OnValidate()
+        {
+            _Google_IosClientScheme = GetIosScheme();
         }
     }
 }

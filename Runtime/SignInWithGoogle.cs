@@ -19,25 +19,14 @@ namespace com.binouze
                 return;
             }
             
-            #if UNITY_ANDROID
+            
             var configuration = new GoogleSignInConfiguration
             {
-                WebClientId    = settings.SignInWithGoogleWebClientID_Android,
-                ClientId       = settings.SignInWithGoogleClientID_Android,
+                WebClientId    = settings.Google_WebClientID,
+                ClientId       = settings.Google_IosClientID, // ClientID is only used on IOS
                 RequestProfile = true,
                 RequestEmail   = true
             };
-            #elif UNITY_IOS
-            var configuration = new GoogleSignInConfiguration
-            {
-                WebClientId    = settings.SignInWithGoogleWebClientID_ios,
-                ClientId       = settings.SignInWithGoogleClientID_ios,
-                RequestProfile = true,
-                RequestEmail   = true
-            };
-            #else
-            return;
-            #endif
             GoogleSignIn.GetInstance().SetConfiguration( configuration );
             GoogleSignIn.OnAuthenticationFinished = OnAuthenticationFinished;
             ResetStatics();
