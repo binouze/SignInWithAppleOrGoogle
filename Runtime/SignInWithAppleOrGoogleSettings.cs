@@ -35,11 +35,11 @@ namespace com.binouze
         
         // -- GOOGLE
         
-        [SerializeField]
+        [SerializeField][TextAreaAttribute]
         private string _Google_WebClientID = string.Empty;
-        [SerializeField]
+        [SerializeField][TextAreaAttribute]
         private string _Google_IosClientID;
-        [SerializeField]
+        [SerializeField][TextAreaAttribute]
         private string _Google_IosClientScheme;
 
         
