@@ -20,28 +20,33 @@ namespace com.binouze
             }
             
             // -- Add the SignInWithGoogle iOS URL Scheme in the settings if needed
-            
-            var schemesOK     = false;
-            var actualSchemes = PlayerSettings.iOS.iOSUrlSchemes;
-            foreach( var scheme in actualSchemes )
-            {
-                if( scheme == settings.APP_URL_SCHEME )
-                {
-                    schemesOK = true;
-                    break;
-                }
-            }
 
-            if( !schemesOK )
+            if( !string.IsNullOrWhiteSpace( settings.APP_URL_SCHEME ) )
             {
-                var schemes = new string[PlayerSettings.iOS.iOSUrlSchemes.Length + 1];
-                for( var i = 0; i < PlayerSettings.iOS.iOSUrlSchemes.Length; i++ )
+                var schemesOK     = false;
+                var actualSchemes = PlayerSettings.iOS.iOSUrlSchemes;
+                foreach( var scheme in actualSchemes )
                 {
-                    schemes[i] = PlayerSettings.iOS.iOSUrlSchemes[i];
+                    if( scheme == settings.APP_URL_SCHEME )
+                    {
+                        schemesOK = true;
+                        break;
+                    }
                 }
 
-                schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.APP_URL_SCHEME;
-                PlayerSettings.iOS.iOSUrlSchemes                 = schemes;
+                if( !schemesOK )
+                {
+                    var schemes = new string[PlayerSettings.iOS.iOSUrlSchemes.Length + 1];
+                    for( var i = 0; i < PlayerSettings.iOS.iOSUrlSchemes.Length; i++ )
+                    {
+                        schemes[i] = PlayerSettings.iOS.iOSUrlSchemes[i];
+                    }
+
+                    schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.APP_URL_SCHEME;
+                    PlayerSettings.iOS.iOSUrlSchemes                 = schemes;
+                    
+                    Debug.Log( "SignInWithGoogle iOS URL Scheme added to PlayerSettings.iOS.iOSUrlSchemes" );
+                }
             }
             
             // copier les fichiers necessaires avant la compilation
