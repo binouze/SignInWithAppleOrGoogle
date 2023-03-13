@@ -62,11 +62,12 @@ public class GoogleSignInHelper
       boolean requestEmail,
       boolean requestIdToken,
       boolean requestProfile,
-      String defaultAccountName ) 
+      String defaultAccountName,
+      String urlScheme ) 
     {
         logDebug("TokenFragment.configure called");
         GoogleSignInFragment fragment = GoogleSignInFragment.getInstance(UnityPlayer.currentActivity);
-        fragment.configure(webClientId,requestAuthCode,forceRefreshToken,requestEmail,requestIdToken,requestProfile,defaultAccountName);
+        fragment.configure(webClientId,requestAuthCode,forceRefreshToken,requestEmail,requestIdToken,requestProfile,defaultAccountName,urlScheme);
     }
 
     public static void signIn() 

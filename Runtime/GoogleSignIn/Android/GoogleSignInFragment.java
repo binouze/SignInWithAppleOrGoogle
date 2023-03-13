@@ -71,6 +71,7 @@ public class GoogleSignInFragment extends Fragment {
     private boolean RequestIdToken;
     private boolean RequestProfile;
     private String  AccountName;
+    private String  UrlScheme;
     
     private String  _WebClientId;
     private boolean _RequestAuthCode;
@@ -79,8 +80,7 @@ public class GoogleSignInFragment extends Fragment {
     private boolean _RequestIdToken;
     private boolean _RequestProfile;
     private String  _AccountName;
-
-    private String _urlScheme;
+    private String  _urlScheme;
 
     public void configure( String webClientId,
                            boolean requestAuthCode,
@@ -112,7 +112,8 @@ public class GoogleSignInFragment extends Fragment {
             RequestEmail      != _RequestEmail      ||
             RequestIdToken    != _RequestIdToken    ||
             RequestProfile    != _RequestProfile    ||
-            AccountName       != _AccountName )
+            AccountName       != _AccountName       ||
+            UrlScheme         != _urlScheme )
         {
             // Configure sign-in to request the user's ID, email address, and basic
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -140,6 +141,7 @@ public class GoogleSignInFragment extends Fragment {
             RequestIdToken    = _RequestIdToken;
             RequestProfile    = _RequestProfile;
             AccountName       = _AccountName;
+            UrlScheme         = _urlScheme;
             
             GoogleSignInHelper.logDebug( "FRAGMENT :: MAJ CONFIG OK");
         }
@@ -252,9 +254,9 @@ public class GoogleSignInFragment extends Fragment {
         // seems not needed on Android.
         //if( _urlScheme != null )
         //    Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(_urlScheme+"xxx") );
-        if( _urlScheme != null )
+        if( UrlScheme != null )
         {
-            String url  = _urlScheme+"xxx";
+            String url  = UrlScheme+"xxx";
             Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(url) );
             UnityPlayer.currentActivity.startActivity( main );
         }
