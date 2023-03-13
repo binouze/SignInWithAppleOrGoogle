@@ -39,7 +39,7 @@ header('Location: '.$linkurl);
 ```
 
 
-#### v2. AndroidManifest
+#### 2. AndroidManifest
 
 Add this in the AndroidManifest.xml
 
