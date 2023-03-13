@@ -99,12 +99,12 @@ namespace com.binouze
                 var ex = Google_IosClientID.Split( "." );
                 if( ex.Length >= 2 )
                 {
-                    // recuperer le dernier element qui ira au debut
-                    var last = ex[^1];
-                    // supprimer le dernier element de la liste
-                    ex = ex[..^1];
+                    // recuperer le premier element qui ira a la fin
+                    var last = ex[0];
+                    // supprimer le premier element de la liste
+                    ex = ex[1..];
                     // reformer le string avec le premier element suivi des autres
-                    return $"{last}."+string.Join( '.', ex );
+                    return string.Join( '.', ex )+$".{last}";
                 }
             }
 
