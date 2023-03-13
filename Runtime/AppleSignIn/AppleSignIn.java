@@ -180,8 +180,8 @@ public class AppleSignIn
         {
             String url  = UrlScheme+"xxx";
             Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(url) );
+            UnityPlayer.currentActivity.startActivity( main );
         }
-        UnityPlayer.currentActivity.startActivity( main );
         
         // Unbind Service
         unbindCustomTabsService();

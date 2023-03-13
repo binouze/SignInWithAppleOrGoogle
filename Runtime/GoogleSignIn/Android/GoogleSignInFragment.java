@@ -256,8 +256,8 @@ public class GoogleSignInFragment extends Fragment {
         {
             String url  = _urlScheme+"xxx";
             Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(url) );
+            UnityPlayer.currentActivity.startActivity( main );
         }
-        UnityPlayer.currentActivity.startActivity( main );
     }
     
     /*Uri uri = Uri.parse(_urlScheme+"xxx");
