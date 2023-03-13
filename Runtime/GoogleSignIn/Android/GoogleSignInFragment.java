@@ -243,7 +243,6 @@ public class GoogleSignInFragment extends Fragment {
         });
     }
     
-    
     public void closeDialog()
     {
         if( !ActionEnCours )
@@ -261,11 +260,6 @@ public class GoogleSignInFragment extends Fragment {
             UnityPlayer.currentActivity.startActivity( main );
         }
     }
-    
-    /*Uri uri = Uri.parse(_urlScheme+"xxx");
-    
-    String url = _urlScheme+"xxx";
-    Uri uri    = Uri.parse(url);*/
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) 

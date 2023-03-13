@@ -287,7 +287,6 @@ namespace com.binouze
         {
             if( _instance == null ) 
             {
-                _instance.Init();
                 _instance = (SignInWithApple)FindObjectOfType( typeof(SignInWithApple) );
                 if( _instance == null ) 
                 {
