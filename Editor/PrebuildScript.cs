@@ -7,9 +7,7 @@ namespace com.binouze
 {
     public class PrebuildScript : IPreprocessBuildWithReport
     {
-        public const string BASE_FOLDER = "Packages/com.binouze.adimplementation/Plugins/AdImplementation/";
-        
-        public int callbackOrder => 0;
+        public int callbackOrder => int.MaxValue;
 
         public void OnPreprocessBuild(BuildReport report)
         {
@@ -21,10 +19,32 @@ namespace com.binouze
                 Debug.LogError( "settings not valid please check LagoonPlugins/SignInWithAppleOrGoogle Settings" );
             }
             
+            var schemesOK     = false;
+            var actualSchemes = PlayerSettings.iOS.iOSUrlSchemes;
+            foreach( var scheme in actualSchemes )
+            {
+                if( scheme == settings.APP_URL_SCHEME )
+                {
+                    schemesOK = true;
+                    break;
+                }
+            }
+
+            if( !schemesOK )
+            {
+                var schemes = new string[PlayerSettings.iOS.iOSUrlSchemes.Length + 1];
+                for( var i = 0; i < PlayerSettings.iOS.iOSUrlSchemes.Length; i++ )
+                {
+                    schemes[i] = PlayerSettings.iOS.iOSUrlSchemes[i];
+                }
+
+                schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.APP_URL_SCHEME;
+            }
+            
             // copier les fichiers necessaires avant la compilation
             PrepareProjectFolders();
         }
-        
+
         public static void PrepareProjectFolders()
         {
             if( !AssetDatabase.IsValidFolder("Assets/LagoonPlugins") )

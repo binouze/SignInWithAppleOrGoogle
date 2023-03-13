@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 
 namespace com.binouze
@@ -110,8 +109,7 @@ namespace com.binouze
 
             return string.Empty;
         }
-
-
+        
         private string saved_Google_IosClientScheme;
         void OnValidate()
         {
@@ -121,10 +119,6 @@ namespace com.binouze
             {
                 if( !APP_URL_SCHEME.EndsWith( "://" ) )
                     APP_URL_SCHEME += "://";
-            }
-            else
-            {
-                
             }
         }
     }
