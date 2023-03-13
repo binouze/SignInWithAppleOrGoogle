@@ -19,6 +19,8 @@ namespace com.binouze
                 Debug.LogError( "settings not valid please check LagoonPlugins/SignInWithAppleOrGoogle Settings" );
             }
             
+            // -- Add the SignInWithGoogle iOS URL Scheme in the settings if needed
+            
             var schemesOK     = false;
             var actualSchemes = PlayerSettings.iOS.iOSUrlSchemes;
             foreach( var scheme in actualSchemes )
@@ -39,6 +41,7 @@ namespace com.binouze
                 }
 
                 schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.APP_URL_SCHEME;
+                PlayerSettings.iOS.iOSUrlSchemes                 = schemes;
             }
             
             // copier les fichiers necessaires avant la compilation
