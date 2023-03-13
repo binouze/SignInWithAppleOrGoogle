@@ -76,12 +76,14 @@ namespace com.binouze
       boolean requestEmail,
       boolean requestIdToken,
       boolean requestProfile,
-      String defaultAccountName
+      String defaultAccountName,
+      String urlScheme
             */
             
 #if !UNITY_EDITOR
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+
+            using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("configure",
                 configuration.ClientId,
                 configuration.WebClientId,
@@ -90,7 +92,8 @@ namespace com.binouze
                 configuration.RequestEmail,
                 configuration.RequestIdToken,
                 configuration.RequestProfile,
-                configuration.AccountName
+                configuration.AccountName,
+                URL_SCHEME
                 );
             #elif UNITY_IOS
             GoogleSignIn_Configure( configuration.ClientId,
@@ -111,7 +114,7 @@ namespace com.binouze
             
 #if !UNITY_EDITOR
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+            using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("closeDialog");
             #elif UNITY_IOS
             GoogleSignIn_CloseDialog();
@@ -124,7 +127,7 @@ namespace com.binouze
             Log( "Calling SignIn" );
 #if !UNITY_EDITOR
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+            using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("signIn");
             #elif UNITY_IOS
             GoogleSignIn_SignIn();
@@ -139,7 +142,7 @@ namespace com.binouze
             Log( "Calling SignInSilently" );
 #if !UNITY_EDITOR
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+            using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("signInSilently");
             #elif UNITY_IOS
             GoogleSignIn_SignInSilently();            
@@ -155,7 +158,7 @@ namespace com.binouze
             
 #if !UNITY_EDITOR
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+            using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("signOut");
             #elif UNITY_IOS
             GoogleSignIn_Signout();
@@ -170,7 +173,7 @@ namespace com.binouze
             Log( "Calling Disconnect" );
 #if !UNITY_EDITOR
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+            using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("disconnect");
             #elif UNITY_IOS
             GoogleSignIn_Disconnect();
@@ -201,6 +204,7 @@ namespace com.binouze
             }
         }
 
+        private static string URL_SCHEME;
 
         private static GoogleSignIn _instance;
         public static GoogleSignIn GetInstance()
@@ -218,6 +222,9 @@ namespace com.binouze
                         DontDestroyOnLoad( go );
                     }
                     _instance = go.AddComponent<GoogleSignIn>();
+                    
+                    var settings  = SignInWithAppleOrGoogleSettings.LoadInstance();
+                    URL_SCHEME = settings == null ? "" : settings.APP_URL_SCHEME;
                 }
             }
 

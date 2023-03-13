@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lagoonsoft;
+package com.binouze;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -80,13 +80,16 @@ public class GoogleSignInFragment extends Fragment {
     private boolean _RequestProfile;
     private String  _AccountName;
 
+    private String _urlScheme;
+
     public void configure( String webClientId,
                            boolean requestAuthCode,
                            boolean forceTokenRefresh,
                            boolean requestEmail,
                            boolean requestIdToken,
                            boolean requestProfile,
-                           String accountName)
+                           String accountName,
+                           String urlScheme)
     {
         // Maj config actuelle
         _WebClientId       = webClientId;
@@ -96,54 +99,7 @@ public class GoogleSignInFragment extends Fragment {
         _RequestIdToken    = requestIdToken;
         _RequestProfile    = requestProfile;
         _AccountName       = accountName;
-    
-        /*if( ActionEnCours )
-        {
-            GoogleSignInHelper.logError( "FRAGMENT :: CONFIGURE FAILED ! ACTION EN COURS !");
-            return false;
-        }
-    
-        if( webClientId       != WebClientId       ||
-            requestAuthCode   != RequestAuthCode   ||
-            forceTokenRefresh != ForceTokenRefresh ||
-            requestEmail      != RequestEmail      ||
-            requestIdToken    != RequestIdToken    ||
-            requestProfile    != RequestProfile    ||
-            accountName       != AccountName )
-        {
-            // Configure sign-in to request the user's ID, email address, and basic
-            // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-            
-            GoogleSignInOptions.Builder builder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN);
-            
-            if( requestAuthCode )
-                builder.requestServerAuthCode(webClientId,forceTokenRefresh);
-            if( requestEmail )
-                builder.requestEmail();
-            if( requestIdToken )
-                builder.requestIdToken(webClientId);
-            if( requestProfile )
-                builder.requestProfile();
-            if( accountName != null )
-                builder.setAccountName(accountName);
-            
-            gso = builder.build();
-            // Build a GoogleSignInClient with the options specified by gso.
-            mGoogleSignInClient = GoogleSignIn.getClient(UnityPlayer.currentActivity, gso);
-            
-            // Maj config actuelle
-            WebClientId       = webClientId;
-            RequestAuthCode   = requestAuthCode;
-            ForceTokenRefresh = forceTokenRefresh;
-            RequestEmail      = requestEmail;
-            RequestIdToken    = requestIdToken;
-            RequestProfile    = requestProfile;
-            AccountName       = accountName;
-            
-            GoogleSignInHelper.logDebug( "FRAGMENT :: CONFIG OK");
-        }
-        
-        return true;*/
+        _urlScheme         = urlScheme;
     }
 
 
@@ -294,7 +250,8 @@ public class GoogleSignInFragment extends Fragment {
         
         // return to main application
         // seems not needed on Android.
-        Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse("pb://xxx") );
+        if( _urlScheme != null )
+            Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(_urlScheme+"xxx") );
         UnityPlayer.currentActivity.startActivity( main );
     }
     

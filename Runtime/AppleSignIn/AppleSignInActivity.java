@@ -1,4 +1,4 @@
-package com.lagoonsoft;
+package com.binouze;
 
 //import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;

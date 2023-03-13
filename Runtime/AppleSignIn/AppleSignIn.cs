@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using UnityEngine;
 
 namespace com.binouze
@@ -11,8 +12,8 @@ namespace com.binouze
         #endif
         
         public static string FAKE_UID;
-        public const string CLIENT_ID = "com.lagoonsoft.pbservice";
-        public const string SCOPE     = "name%20email";
+        public static string CLIENT_ID;
+        public static string SCOPE;
 
         private static Action<string,string,string,string> OnComplete;
 
@@ -38,8 +39,8 @@ namespace com.binouze
                 return;
 
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.AppleSignIn");
-            cls.CallStatic("init", CLIENT_ID, redirectURI, SCOPE);
+            using var cls = new AndroidJavaClass("com.binouze.AppleSignIn");
+            cls.CallStatic("init", CLIENT_ID, redirectURI, SCOPE, URL_SCHEME);
             #endif
 
             IsInit = true;
@@ -58,7 +59,7 @@ namespace com.binouze
             #if UNITY_EDITOR
             OnAppleSignInResponse( SUCCESS_RESPONSE );
             #elif UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.AppleSignIn");
+            using var cls = new AndroidJavaClass("com.binouze.AppleSignIn");
             cls.CallStatic("signIn");
             #elif UNITY_IOS
             //GoogleSignIn_Disconnect();
@@ -68,7 +69,7 @@ namespace com.binouze
         public void CloseDialog()
         {
             #if UNITY_ANDROID
-            using var cls = new AndroidJavaClass("com.lagoonsoft.AppleSignIn");
+            using var cls = new AndroidJavaClass("com.binouze.AppleSignIn");
             cls.CallStatic("closeDialog");
             #elif UNITY_IOS
             //GoogleSignIn_CloseDialog();
@@ -99,6 +100,7 @@ namespace com.binouze
             OnComplete?.Invoke( uid, email, firstName, lastName );
         }
         
+        private static string      URL_SCHEME;
         private static AppleSignIn _instance;
         public static AppleSignIn GetInstance() 
         {
@@ -116,6 +118,11 @@ namespace com.binouze
                         DontDestroyOnLoad( go );
                     }
                     _instance = go.AddComponent<AppleSignIn>();
+                    
+                    var settings = SignInWithAppleOrGoogleSettings.LoadInstance();
+                    URL_SCHEME   = settings == null ? "" : settings.APP_URL_SCHEME;
+                    CLIENT_ID    = settings == null ? "" : settings.APPLECONNECT_CLIENT_ID;
+                    SCOPE        = settings == null ? "" : HttpUtility.UrlEncode(string.Join(' ',settings.APPLECONNECT_SCOPE));
                 }
             }
             return _instance;

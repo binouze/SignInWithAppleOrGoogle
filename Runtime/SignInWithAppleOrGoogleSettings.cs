@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -19,34 +20,58 @@ namespace com.binouze
         {
             return
                 !string.IsNullOrEmpty( _URL_APPLECONNECT_REDIRECT ) &&
+                !string.IsNullOrEmpty( _APPLECONNECT_CLIENT_ID ) &&
+                _APPLECONNECT_SCOPE?.Count > 0 &&
+                !string.IsNullOrEmpty( _APP_URL_SCHEME ) && _APP_URL_SCHEME.Replace( "://", "" ).Length > 0 &&
                 !string.IsNullOrEmpty( _Google_WebClientID )        &&
                 !string.IsNullOrEmpty( _Google_IosClientID )        &&
                 !string.IsNullOrEmpty( _Google_IosClientScheme );
         }
         
+        [SerializeField][TextArea]
+        private string _APP_URL_SCHEME = string.Empty;
+        
         // -- APPLE
         
-        [SerializeField][TextAreaAttribute]
+        [SerializeField][TextArea]
         private string _URL_APPLECONNECT_REDIRECT = string.Empty;
+        [SerializeField][TextArea]
+        private string _APPLECONNECT_CLIENT_ID = string.Empty;
+        [SerializeField]
+        private List<string> _APPLECONNECT_SCOPE = new (){"name","email"};
 
-        
-        //TODO1 maj fields: WebClientID + iOSClientID
-        //TODO1 add fields iosScheme auto generated (inverser le client ID) + Prebuild script pour ajouter le scheme aux PlayerSettings.iOS.iOSUrlSchemes
-        
         // -- GOOGLE
         
-        [SerializeField][TextAreaAttribute]
+        [SerializeField][TextArea]
         private string _Google_WebClientID = string.Empty;
-        [SerializeField][TextAreaAttribute]
+        [SerializeField][TextArea]
         private string _Google_IosClientID;
-        [SerializeField][TextAreaAttribute]
+        [SerializeField][TextArea]
         private string _Google_IosClientScheme;
 
+        
+        public string APP_URL_SCHEME
+        {
+            get => _APP_URL_SCHEME;
+            set => _APP_URL_SCHEME = value;
+        }
         
         public string URL_APPLECONNECT_REDIRECT
         {
             get => _URL_APPLECONNECT_REDIRECT;
             set => _URL_APPLECONNECT_REDIRECT = value;
+        }
+        
+        public string APPLECONNECT_CLIENT_ID
+        {
+            get => _APPLECONNECT_CLIENT_ID;
+            set => _APPLECONNECT_CLIENT_ID = value;
+        }
+        
+        public List<string> APPLECONNECT_SCOPE
+        {
+            get => _APPLECONNECT_SCOPE;
+            set => _APPLECONNECT_SCOPE = value;
         }
 
         public string Google_WebClientID
@@ -91,6 +116,16 @@ namespace com.binouze
         void OnValidate()
         {
             _Google_IosClientScheme = GetIosScheme();
+
+            if( APP_URL_SCHEME.Replace( "://", "" ).Length > 0 )
+            {
+                if( !APP_URL_SCHEME.EndsWith( "://" ) )
+                    APP_URL_SCHEME += "://";
+            }
+            else
+            {
+                
+            }
         }
     }
 }

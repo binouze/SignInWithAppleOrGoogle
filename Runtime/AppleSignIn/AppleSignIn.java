@@ -1,4 +1,4 @@
-package com.lagoonsoft;
+package com.binouze;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -48,10 +48,11 @@ public class AppleSignIn
     private static String ClientID;
     private static String RedirectURI;
     private static String Scope;
+    private static String UrlScheme;
 
     private static boolean isActive;
 
-    public static void init( String clientID, String redirectURI, String scope ) 
+    public static void init( String clientID, String redirectURI, String scope, String urlScheme ) 
     {
         Log.i( TAG, "init" );
     
@@ -175,7 +176,8 @@ public class AppleSignIn
         isActive = false;
         
         // return to main application
-        Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse("pb://xxx") );
+        if( UrlScheme != null )
+            Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(UrlScheme+"xxx") );
         UnityPlayer.currentActivity.startActivity( main );
         
         // Unbind Service

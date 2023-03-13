@@ -20,56 +20,42 @@ this repository and put it in the `Assets/Plugins` folder of your project.
 
 ## How to use
 
+Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and enter the required settings.
+
 ```csharp
-    private void Start()
+    
+    // GOOGLE
+    
+    // Google SignIn
+    SignInWithAppleOrGoogle.Google_SignIn( (isConnected, user) =>
     {
-        // These settings must be set before Initialisation call
-        if( DEBUG )
+        if( isConnected )
         {
-            // this one is false by default
-            GoogleUserMessagingPlatform.SetDebugLogging( true );
-            
-            // Set here your device ID for testing, 
-            // if not set, the device ID to put here will be shown in the console
-            #if UNITY_IOS
-            GoogleUserMessagingPlatform.SetDebugMode( "XXXXXXXXX", true );
-            #elif UNITY_ANDROID
-            GoogleUserMessagingPlatform.SetDebugMode( "XXXXXXXXX", true );
-            #endif
+            // user connected, get user info in user object
         }
-        
-        // Better to have this one set before the Initialisation too
-        // so after initialisation it will be called with the current status
-        GoogleUserMessagingPlatform.SetOnStatusChangedListener( MajConsentStatus );
-        // Initialize GoogleUserMessagingPlatform
-        GoogleUserMessagingPlatform.Initialize();
-    }
+        else
+        {
+            user not connected
+        }
+    }, 
+    silent,       // if true this will not prompt the user to connect
+    silentOnly ); // if false, after a silent connect fail, this wil try a non silent connection
     
-    private void MajConsentStatus( ConsentStatus status )
+    // Google SignOut
+    SignInWithAppleOrGoogle.Google_SignOut( OnComplete );
+    
+    
+    // APPLE
+    
+    // Apple SignIn
+    SignInWithAppleOrGoogle.Apple_SignIn( (isConnected, user) =>
     {
-        // Maybe you want to show the form directly after the initialisation if status is REQUIRED
-        GoogleUserMessagingPlatform.ShowFormIfRequired();
-    }
+        ConnectComplete( isConnected, user, OnComplete );
+    }, 
+    appleID ); // IOS only: optionnaly an AppleID to connect to, if defined, this will check for connection status
     
-    private void ShowConsentFormBeforeAction()
-    {
-        // Maybe you want to show the consent form before to make an action
-        GoogleUserMessagingPlatform.ShowForm( () => {
-            // Do whatever after
-        });
-        
-        // Maybe you want to show the consent form before to make an action only if status is REQUIRED
-        GoogleUserMessagingPlatform.ShowFormIfRequired( () => {
-            // Do whatever after
-        });
-    }
+    // Apple SignOut
+    SignInWithAppleOrGoogle.Apple_SignOut( OnComplete );
     
-    
-    private void InitFormButton()
-    {
-        // If you want a button to show the form only if available
-        Button.gameObject.SetActive( GoogleUserMessagingPlatform.IsFormAvailable() );
-        Button.onClick.AddListener( GoogleUserMessagingPlatform.ShowForm )
-    }
     
 ```
