@@ -61,29 +61,32 @@ namespace com.binouze
 
             // -- Apple
             
-            EditorGUILayout.LabelField("SignIn with Apple configuration", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("SignIn with Apple configuration:", EditorStyles.boldLabel);
+            EditorGUILayout.Separator();
             //EditorGUILayout.HelpBox( "enter your AdMost applications ids here", MessageType.Info);
             
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_URL_APPLECONNECT_REDIRECT, new GUIContent("URL_APPLECONNECT_REDIRECT"));
-            EditorGUI.indentLevel--;
+            //EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(_URL_APPLECONNECT_REDIRECT, new GUIContent("Apple Connect Redirect URL:"));
+            //EditorGUI.indentLevel--;
             
+            EditorGUILayout.Separator();
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
 
             
             // -- Google
             
-            EditorGUILayout.LabelField("SignIn with Google configuration", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("SignIn with Google configuration:", EditorStyles.boldLabel);
+            EditorGUILayout.Separator();
             
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_Google_WebClientID,     new GUIContent("Web Client ID"));
-            EditorGUILayout.PropertyField(_Google_IosClientID,     new GUIContent(" iOS Client ID"));
+            //EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(_Google_WebClientID,     new GUIContent("Web Client ID:"));
+            EditorGUILayout.PropertyField(_Google_IosClientID,     new GUIContent("iOS Client ID:"));
             
             EditorGUI.BeginDisabledGroup( true );
-            EditorGUILayout.PropertyField(_Google_IosClientScheme, new GUIContent("iOS Scheme"));
+            EditorGUILayout.PropertyField(_Google_IosClientScheme, new GUIContent("iOS Scheme:"));
             EditorGUI.EndDisabledGroup();
-            EditorGUI.indentLevel--;
+            //EditorGUI.indentLevel--;
             
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();

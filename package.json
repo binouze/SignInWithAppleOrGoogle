@@ -1,6 +1,6 @@
 {
   "name": "com.binouze.signinwithappleorgoogle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "unity": "2021.3",
   "displayName": "SignInWithAppleOrGoogle",
   "description": "SignIn with Google or Apple Account for iOS and Android\n.",

@@ -26,7 +26,7 @@ namespace com.binouze
         
         // -- APPLE
         
-        [SerializeField]
+        [SerializeField][TextAreaAttribute]
         private string _URL_APPLECONNECT_REDIRECT = string.Empty;
 
         
