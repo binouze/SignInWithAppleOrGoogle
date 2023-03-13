@@ -250,8 +250,13 @@ public class GoogleSignInFragment extends Fragment {
         
         // return to main application
         // seems not needed on Android.
-        if( _urlScheme != null )
-            Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(_urlScheme+"xxx") );
+        //if( _urlScheme != null )
+        //    Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(_urlScheme+"xxx") );
+        if( UrlScheme != null )
+        {
+            String url  = _urlScheme+"xxx";
+            Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(url) );
+        }
         UnityPlayer.currentActivity.startActivity( main );
     }
     

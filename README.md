@@ -22,6 +22,38 @@ this repository and put it in the `Assets/Plugins` folder of your project.
 
 Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and enter the required settings.
 
+
+**Android Configuration:**
+
+Apple Connect:
+Apple send connection data to an URL, "Apple Connect Redirect URL" in the settings,
+Here is an exemple of this page in php:
+
+```php
+// get the POST datas and sent it back to the app in GET variables
+$post    = http_build_query($_POST);
+$linkurl = "pbauth://applesignin/?$post";
+header('Location: '.$linkurl);
+```
+
+Add this in the AndroidManifest.xml
+
+Change the {REDIRECT_SCHEME} and {REDIRECT_HOST} to what is set in your redirect url. (pbauth and applesignin in the previous exemple.)
+
+```xml
+<!-- POUR LES REDIRECT APPLE SIGNIN -->
+<activity android:name="com.binouze.AppleSignInActivity" android:launchMode="singleTop" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:exported="true">
+  <!-- POUR LES REDIRECT APPLE SIGNIN -->
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="{REDIRECT_SCHEME}" android:host="{REDIRECT_HOST}" />
+  </intent-filter>
+</activity>
+```
+
+
 ```csharp
     
     // GOOGLE

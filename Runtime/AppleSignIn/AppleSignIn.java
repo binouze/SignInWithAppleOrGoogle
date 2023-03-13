@@ -177,7 +177,10 @@ public class AppleSignIn
         
         // return to main application
         if( UrlScheme != null )
-            Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(UrlScheme+"xxx") );
+        {
+            String url  = UrlScheme+"xxx";
+            Intent main = new Intent( Intent.ACTION_VIEW, Uri.parse(url) );
+        }
         UnityPlayer.currentActivity.startActivity( main );
         
         // Unbind Service
