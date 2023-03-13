@@ -1,6 +1,8 @@
 # SignInWithAppleOrGoogle
 
-SignIn with Google or Apple Account for iOS and Android
+SignIn with Google or Apple Account for iOS and Android.
+
+Sign in with Apple on iOS uses: https://github.com/lupidan/apple-signin-unity
 
 ## Installation
 
@@ -18,16 +20,16 @@ this repository and put it in the `Assets/Plugins` folder of your project.
     - paste the following url: `"https://github.com/binouze/SignInWithAppleOrGoogle.git"`
 
 
-## How to use
+## Android Configuration:
 
-Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and enter the required settings.
+### Apple SignIn:
 
+#### 1. Redirect Page
 
-**Android Configuration:**
+Apple send connection data to an URL ("Apple Connect Redirect URL" in the settings) as POST variables,
+This page must redirect to the app and send all the params as GET variables.
 
-Apple Connect:
-Apple send connection data to an URL, "Apple Connect Redirect URL" in the settings,
-Here is an exemple of this page in php:
+Here is an example of this page in php:
 
 ```php
 // get the POST datas and sent it back to the app in GET variables
@@ -35,6 +37,9 @@ $post    = http_build_query($_POST);
 $linkurl = "pbauth://applesignin/?$post";
 header('Location: '.$linkurl);
 ```
+
+
+#### v2. AndroidManifest
 
 Add this in the AndroidManifest.xml
 
@@ -52,6 +57,10 @@ Change the {REDIRECT_SCHEME} and {REDIRECT_HOST} to what is set in your redirect
   </intent-filter>
 </activity>
 ```
+
+## How to use
+
+Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
 
 
 ```csharp

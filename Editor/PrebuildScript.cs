@@ -27,7 +27,7 @@ namespace com.binouze
                 var actualSchemes = PlayerSettings.iOS.iOSUrlSchemes;
                 foreach( var scheme in actualSchemes )
                 {
-                    if( scheme == settings.APP_URL_SCHEME )
+                    if( scheme == settings.Google_IosClientScheme )
                     {
                         schemesOK = true;
                         break;
@@ -42,7 +42,7 @@ namespace com.binouze
                         schemes[i] = PlayerSettings.iOS.iOSUrlSchemes[i];
                     }
 
-                    schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.APP_URL_SCHEME;
+                    schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.Google_IosClientScheme;
                     PlayerSettings.iOS.iOSUrlSchemes                 = schemes;
                     
                     Debug.Log( "SignInWithGoogle iOS URL Scheme added to PlayerSettings.iOS.iOSUrlSchemes" );
