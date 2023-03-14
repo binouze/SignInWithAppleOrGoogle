@@ -45,7 +45,7 @@ namespace com.binouze
                     schemes[PlayerSettings.iOS.iOSUrlSchemes.Length] = settings.Google_IosClientScheme;
                     PlayerSettings.iOS.iOSUrlSchemes                 = schemes;
                     
-                    Debug.Log( $"SignInWithGoogle iOS URL Scheme ({settings.Google_IosClientScheme}) added to PlayerSettings.iOS.iOSUrlSchemes" );
+                    Debug.LogWarning( $"SignInWithGoogle iOS URL Scheme ({settings.Google_IosClientScheme}) added to PlayerSettings.iOS.iOSUrlSchemes" );
                 }
             }
             
