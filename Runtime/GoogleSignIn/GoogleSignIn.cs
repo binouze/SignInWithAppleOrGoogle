@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using com.binouze;
 
-#if UNITY_IOS
+#if UNITY_ANDROID
+using UnityEngine;
+#elif UNITY_IOS
 using System.Runtime.InteropServices;
 #endif
 
@@ -63,6 +64,17 @@ namespace com.binouze
             PluginLogger.Log( $"[GoogleSignIn] {val}" );
         }
         
+        public static void SetLoggingEnabled( bool enabled )
+        {
+            #if !UNITY_EDITOR
+                #if UNITY_ANDROID
+                    using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
+                    cls.CallStatic("enableDebugLogging", enabled);
+                #elif UNITY_IOS
+                    GoogleSignIn_EnableDebugLogging(enabled);
+                #endif
+            #endif
+        }
 
         public void SetConfiguration( GoogleSignInConfiguration configuration )
         {

@@ -26,15 +26,7 @@ namespace com.binouze
         public void SetLoggingEnabled( bool val )
         {
             PluginLogger.SetEnabled( val );
-            
-            #if !UNITY_EDITOR
-                #if UNITY_ANDROID
-                    using var cls = new AndroidJavaClass("com.lagoonsoft.GoogleSignInHelper");
-                    cls.CallStatic("enableDebugLogging", val);
-                #elif UNITY_IOS
-                    GoogleSignIn_EnableDebugLogging(val);
-                #endif
-            #endif
+            GoogleSignIn.SetLoggingEnabled( val );
         }
         
         // -- GOOGLE --
