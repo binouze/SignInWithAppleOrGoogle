@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -96,7 +97,9 @@ namespace com.binouze
             if( !string.IsNullOrWhiteSpace( Google_IosClientID ) )
             {
                 var ex = Google_IosClientID.Split( "." );
-                if( ex.Length >= 2 )
+                Array.Reverse( ex );
+                return string.Join( '.', ex );// +$".{last}";
+                /*if( ex.Length >= 2 )
                 {
                     // recuperer le premier element qui ira a la fin
                     var last = ex[0];
@@ -104,7 +107,7 @@ namespace com.binouze
                     ex = ex[1..];
                     // reformer le string avec le premier element suivi des autres
                     return string.Join( '.', ex )+$".{last}";
-                }
+                }*/
             }
 
             return string.Empty;
