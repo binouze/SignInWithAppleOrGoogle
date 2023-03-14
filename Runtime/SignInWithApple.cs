@@ -55,7 +55,7 @@ namespace com.binouze
                 appleAuthManager.SetCredentialsRevokedCallback(result =>
                 {
                     // deco -> reset game
-                    OnTokenRevoked?.Invoke();
+                    SignInWithAppleOrGoogle.OnTokenRevoked?.Invoke();
                 });
             }
             #else
@@ -179,7 +179,7 @@ namespace com.binouze
             }
             
             var instance = GetInstance();
-            if( !appleID.IsNullOrEmpty() )
+            if( !string.IsNullOrWhiteSpace(appleID) )
             {
                 Log( $"Connect => CheckCredentials {appleID}" );
                 instance.CheckCredentials( appleID, OnComplete );
