@@ -16,7 +16,7 @@ namespace com.binouze
             var settings = SignInWithAppleOrGoogleSettingsEditor.LoadSettingsInstance();
             if( settings == null || !settings.IsValide() )
             {
-                Debug.LogError( "settings not valid please check LagoonPlugins/SignInWithAppleOrGoogle Settings" );
+                Debug.LogWarning( "settings not valid please check LagoonPlugins/SignInWithAppleOrGoogle Settings" );
             }
             
             // -- Add the SignInWithGoogle iOS URL Scheme in the settings if needed
