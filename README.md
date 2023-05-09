@@ -1,6 +1,6 @@
 # SignInWithAppleOrGoogle
 
-SignIn with Google or Apple Account for iOS and Android.
+Unity plugin to SignIn with Google or Apple Account for iOS and Android.
 
 Sign in with Apple on iOS uses: https://github.com/lupidan/apple-signin-unity
 
