@@ -4,29 +4,41 @@ Unity plugin to SignIn with Google or Apple Account for iOS and Android.
 
 Sign in with Apple on iOS uses: https://github.com/lupidan/apple-signin-unity
 
-## Installation
+## PACKAGE INSTALLATION:
 
-Choose your favourite method:
-
-- **Plain install**
-    - Clone or [download](https://github.com/binouze/SignInWithAppleOrGoogle/archive/refs/heads/master.zip) 
-this repository and put it in the `Assets/Plugins` folder of your project.
-- **Unity Package Manager (Manual)**:
-    - Add the following line to *Packages/manifest.json*:
-    - `"com.binouze.signinwithappleorgoogle": "https://github.com/binouze/SignInWithAppleOrGoogle.git"`
-- **Unity Package Manager (Auto)**
-    - in the package manager, click on the + 
-    - select `add package from GIT url`
-    - paste the following url: `"https://github.com/binouze/SignInWithAppleOrGoogle.git"`
+- in the package manager, click on the + 
+- select `add package from GIT url`
+- paste the following url: `"https://github.com/binouze/SignInWithAppleOrGoogle.git"`
 
 
-## Android Configuration:
+## SET UP GOOGLE SIGN IN:
+
+1. Set up your Google APIs console project for Android: https://developer.android.com/identity/sign-in/credential-manager-siwg#set-google
+2. Set up your Google APIs console project for iOS: https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id
+3. Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
+    - **Web Client ID:** the client Id you created on the 1st step (Web App).
+    - **iOS Client ID:** the client Id you created on step 2 (iOS).
+    - **iOS Scheme:** is auto generated based on the iOS Client ID.
+
+
+## (TODO) SET UP APPLE SIGN IN:
+
+1. Set up your Google APIs console project for Android: https://developer.android.com/identity/sign-in/credential-manager-siwg#set-google
+2. Set up your Google APIs console project for iOS: https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id
+3. Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
+    - **Android App URL Scheme:** the app url scheme, used to force close the login form when calling AppleSignIn.CloseDialog().
+    - **Apple Connect Redirect URL:** see below.
+    - **Apple Connect ClientID:** xxxxxxxxx.
+    - **Apple Connect Scope:** xxxxxxxxx.
+   
+
+## ANDROID CONFIGURATION:
 
 ### Apple SignIn:
 
 #### 1. Redirect Page
 
-Apple send connection data to an URL ("Apple Connect Redirect URL" in the settings) as POST variables,
+On Android, Apple sends connection data to an URL ("Apple Connect Redirect URL" in the settings) as POST variables,
 This page must redirect to the app and send all the params as GET variables.
 
 Here is an example of this page in php:
@@ -58,27 +70,24 @@ Change the {REDIRECT_SCHEME} and {REDIRECT_HOST} to what is set in your redirect
 </activity>
 ```
 
-## SET UP GOOGLE SIGN IN
 
-1. Set up your Google APIs console project for Android: https://developer.android.com/identity/sign-in/credential-manager-siwg#set-google
-2. Set up your Google APIs console project for iOS: https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id
-3. Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
-   - **Web Client ID:** the client Id you created on the 1st step (Web App).
-   - **iOS Client ID:** the client Id you created on step 2 (iOS).
-   - **iOS Scheme:** is auto generated based on the iOS Client ID.
+### Proguard rules to add:
+
+If you use proguard to minify your project you should add theses rules to be sure everything works.
+
+```
+# plugins com.binouze
+-keep class com.binouze.** { *; } 
+
+# google Credential manager
+-if class androidx.credentials.CredentialManager
+-keep class androidx.credentials.playservices.** {
+*;
+}
+```
 
 
-## (TODO) SET UP APPLE SIGN IN
-
-1. Set up your Google APIs console project for Android: https://developer.android.com/identity/sign-in/credential-manager-siwg#set-google
-2. Set up your Google APIs console project for iOS: https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id
-3. Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
-   - **Android App URL Scheme:** xxxxxxxxx.
-   - **Apple Connect Redirect URL:** xxxxxxxxx.
-   - **Apple Connect ClientID:** xxxxxxxxx.
-   - **Apple Connect Scope:** xxxxxxxxx.
-
-## How to use
+## HOW TO USE
 
 Once configured, it's pretty simple to use:
 
@@ -127,17 +136,3 @@ Once configured, it's pretty simple to use:
 ```
 
 
-### Proguard rules to add
-
-If you use proguard to minify your project you should add theses rules to be sure everything works.
-
-```
-# plugins com.binouze
--keep class com.binouze.** { *; } 
-
-# google Credential manager
--if class androidx.credentials.CredentialManager
--keep class androidx.credentials.playservices.** {
-*;
-}
-```

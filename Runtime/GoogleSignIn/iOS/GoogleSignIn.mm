@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #import "GoogleSignIn.h"
-#import <GoogleSignIn/GIDAuthentication.h>
+//#import <GoogleSignIn/GIDAuthentication.h>
 #import <GoogleSignIn/GIDGoogleUser.h>
 #import <GoogleSignIn/GIDProfileData.h>
 #import <GoogleSignIn/GIDSignIn.h>
@@ -212,238 +212,167 @@ void DoSendUnityMessage(int status, GIDGoogleUser* user)
  */
 extern "C" {
 
-static NSString* gameObjectName        = @"GoogleSignInHelperObject";
-static NSString* deeplinkMethodName    = @"OnSignInResult";
-
-// There is no public unity header, need to declare this manually:
-// http://answers.unity3d.com/questions/58322/calling-unitysendmessage-requires-which-library-on.html
-extern void UnitySendMessage(const char *, const char *, const char *);
-
-
-/**
- * forcer la fermeture du dialogue si affiche
- */
-void GoogleSignIn_CloseDialog()
-{
-    if( [GoogleSignInHandler sharedInstance]->modalOpen == YES )
-    {
-        [GoogleSignInHandler sharedInstance]->modalOpen = NO;
-        [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
-
-void GoogleSignIn_EnableDebugLogging(bool flag) 
-{
-    if( flag ) 
-    {
-        NSLog(@"GoogleSignIn: No optional logging available on iOS");
-    }
-}
-
-/*
-      String webClientId,
-      boolean requestAuthCode,
-      boolean forceRefreshToken,
-      boolean requestEmail,
-      boolean requestIdToken,
-      boolean requestProfile,
-      String defaultAccountName
-            */
-
-/**
- * Configures the GIDSignIn instance.  The first parameter is unused in iOS.
- * It is here to make the API between Android and iOS uniform.
- */
-void GoogleSignIn_Configure(const char *clientId,
-                            const char *webClientId,
-                            bool requestAuthCode,
-                            bool forceTokenRefresh, 
-                            bool requestEmail,
-                            bool requestIdToken, 
-                            bool requestProfile,
-                            const char *accountName) 
-{
-    NSString* nsClientID = [NSString stringWithUTF8String:clientId];
-    GIDConfiguration* config;
-    if( webClientId ) 
-    {
-        config = [[GIDConfiguration alloc] initWithClientID:nsClientID serverClientID:[NSString stringWithUTF8String:webClientId]];
-    }
-    else
-    {
-        config = [[GIDConfiguration alloc] initWithClientID:nsClientID];
-    }
-    [GoogleSignInHandler sharedInstance]->signInConfiguration = config;
-
-//     int scopeSize = scopeCount;
-//     if (scopeSize) {
-//         NSMutableArray *tmpary = [[NSMutableArray alloc] initWithCapacity:scopeSize];
-//         for (int i = 0; i < scopeCount; i++) {
-//             [tmpary addObject:[NSString stringWithUTF8String:additionalScopes[i]]];
-//         }
-//         [GoogleSignInHandler sharedInstance]->additionalScopes = tmpary;
-//     }
-
-    if( accountName ) 
-    {
-        [GoogleSignInHandler sharedInstance]->loginHint = [NSString stringWithUTF8String:accountName];
-    }
-}
-
-/**
- Starts the sign-in process.  Returns and error result if error, null otherwise.
- */
-// static SignInResult *startSignIn() {
-//   bool busy = false;
-//   [resultLock lock];
-//   if (!currentResult_ || currentResult_->finished) {
-//     currentResult_.reset(new SignInResult());
-//     currentResult_->result_code = 0;
-//     currentResult_->finished = false;
-//   } else {
-//     busy = true;
-//   }
-//   [resultLock unlock];
-// 
-//   if (busy) {
-//     NSLog(@"ERROR: There is already a pending sign-in operation.");
-//     // Returned to the caller, should be deleted by calling
-//     // GoogleSignIn_DisposeFuture().
-//     return new SignInResult{.result_code = kStatusCodeDeveloperError,
-//                             .finished = true};
-//   }
-//   return nullptr;
-// }
-
-/**
- * Sign-In.  The return value is a pointer to the currentResult object.
- */
-void GoogleSignIn_SignIn() 
-{
-    [GoogleSignInHandler sharedInstance]->modalOpen = YES;
-    [[GIDSignIn sharedInstance] signInWithConfiguration:[GoogleSignInHandler sharedInstance]->signInConfiguration
-                               presentingViewController:UnityGetGLViewController()
-                                                   hint:[GoogleSignInHandler sharedInstance]->loginHint
-                                               callback:^(GIDGoogleUser *user, NSError *error) {
-        [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didSignInForUser:user withError:error];
-    }];
-}
-
-/**
- * Attempt a silent sign-in. Return value is the pointer to the currentResult
- * object.
- */
-void GoogleSignIn_SignInSilently() 
-{
-    [[GIDSignIn sharedInstance] restorePreviousSignInWithCallback:^(GIDGoogleUser *user, NSError *error) {
-        [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didSignInForUser:user withError:error];
-    }];
-}
-
-void GoogleSignIn_Signout() 
-{
-    //GIDSignIn *signIn = [GIDSignIn sharedInstance];
-    //[signIn signOut];
+    static NSString* gameObjectName        = @"GoogleSignInHelperObject";
+    static NSString* deeplinkMethodName    = @"OnSignInResult";
     
-    [GIDSignIn.sharedInstance signOut];
-    // SEND MESSAGE SIGNOUT COMPLETE
-    DoSendUnityMessage(-2,nil);
-}
+    // There is no public unity header, need to declare this manually:
+    // http://answers.unity3d.com/questions/58322/calling-unitysendmessage-requires-which-library-on.html
+    extern void UnitySendMessage(const char *, const char *, const char *);
+    
+    
+    /**
+     * forcer la fermeture du dialogue si affiche
+     */
+    void GoogleSignIn_CloseDialog()
+    {
+        if( [GoogleSignInHandler sharedInstance]->modalOpen == YES )
+        {
+            [GoogleSignInHandler sharedInstance]->modalOpen = NO;
+            [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+    
+    
+    void GoogleSignIn_EnableDebugLogging(bool flag) 
+    {
+        if( flag ) 
+        {
+            NSLog(@"GoogleSignIn: No optional logging available on iOS");
+        }
+    }
+    
+    /*
+          String webClientId,
+          boolean requestAuthCode,
+          boolean forceRefreshToken,
+          boolean requestEmail,
+          boolean requestIdToken,
+          boolean requestProfile,
+          String defaultAccountName
+                */
+    
+    /**
+     * Configures the GIDSignIn instance.  The first parameter is unused in iOS.
+     * It is here to make the API between Android and iOS uniform.
+     */
+    void GoogleSignIn_Configure(const char *clientId,
+                                const char *webClientId,
+                                bool requestAuthCode,
+                                bool forceTokenRefresh, 
+                                bool requestEmail,
+                                bool requestIdToken, 
+                                bool requestProfile,
+                                const char *accountName) 
+    {
+        NSString* nsClientID = [NSString stringWithUTF8String:clientId];
+        GIDConfiguration* config;
+        if( webClientId ) 
+        {
+            config = [[GIDConfiguration alloc] initWithClientID:nsClientID serverClientID:[NSString stringWithUTF8String:webClientId]];
+        }
+        else
+        {
+            config = [[GIDConfiguration alloc] initWithClientID:nsClientID];
+        }
+        [GoogleSignInHandler sharedInstance]->signInConfiguration = config;
+        
+        // save the configuration in the GIDSignIn sharedInstance
+        GIDSignIn.sharedInstance.configuration = config;
+       
+        if( accountName ) 
+        {
+            [GoogleSignInHandler sharedInstance]->loginHint = [NSString stringWithUTF8String:accountName];
+        }
+    }
+    
+    /**
+     Starts the sign-in process.  Returns and error result if error, null otherwise.
+     */
+    // static SignInResult *startSignIn() {
+    //   bool busy = false;
+    //   [resultLock lock];
+    //   if (!currentResult_ || currentResult_->finished) {
+    //     currentResult_.reset(new SignInResult());
+    //     currentResult_->result_code = 0;
+    //     currentResult_->finished = false;
+    //   } else {
+    //     busy = true;
+    //   }
+    //   [resultLock unlock];
+    // 
+    //   if (busy) {
+    //     NSLog(@"ERROR: There is already a pending sign-in operation.");
+    //     // Returned to the caller, should be deleted by calling
+    //     // GoogleSignIn_DisposeFuture().
+    //     return new SignInResult{.result_code = kStatusCodeDeveloperError,
+    //                             .finished = true};
+    //   }
+    //   return nullptr;
+    // }
+    
+    /**
+     * Sign-In.  The return value is a pointer to the currentResult object.
+     */
+    void GoogleSignIn_SignIn() 
+    {
+        [GoogleSignInHandler sharedInstance]->modalOpen = YES;
+        [GIDSignIn.sharedInstance signInWithPresentingViewController:UnityGetGLViewController()
+                                                                hint:[GoogleSignInHandler sharedInstance]->loginHint
+                                                    additionalScopes:[GoogleSignInHandler sharedInstance]->additionalScopes
+                                                          completion:^(GIDSignInResult * _Nullable signInResult, NSError * _Nullable error)
+         {
+            [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance]
+                                        didSignInForUser:GIDSignIn.sharedInstance.currentUser
+                                               withError:error];
+        }];
+        
+        
+        /*[[GIDSignIn sharedInstance] signInWithConfiguration:[GoogleSignInHandler sharedInstance]->signInConfiguration
+                                   presentingViewController:UnityGetGLViewController()
+                                                       hint:[GoogleSignInHandler sharedInstance]->loginHint
+                                                   callback:^(GIDGoogleUser *user, NSError *error) {
+            [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didSignInForUser:user withError:error];
+        }];*/
+    }
+    
+    /**
+     * Attempt a silent sign-in. Return value is the pointer to the currentResult
+     * object.
+     */
+    void GoogleSignIn_SignInSilently() 
+    {
+        [GIDSignIn.sharedInstance restorePreviousSignInWithCompletion:^(GIDGoogleUser * _Nullable user, NSError * _Nullable error)
+         {
+            [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance]
+                                        didSignInForUser:GIDSignIn.sharedInstance.currentUser
+                                               withError:error];
+        }];
+        
+        /*[[GIDSignIn sharedInstance] restorePreviousSignInWithCallback:^(GIDGoogleUser *user, NSError *error) {
+            [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didSignInForUser:user withError:error];
+        }];*/
+    }
+    
+    void GoogleSignIn_Signout() 
+    {
+        //GIDSignIn *signIn = [GIDSignIn sharedInstance];
+        //[signIn signOut];
+        
+        [GIDSignIn.sharedInstance signOut];
+        // SEND MESSAGE SIGNOUT COMPLETE
+        DoSendUnityMessage(-2,nil);
+    }
+    
+    void GoogleSignIn_Disconnect() 
+    {
+        [GIDSignIn.sharedInstance disconnectWithCompletion:^(NSError * _Nullable error) {
+            [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didDisconnectWithUser:nil withError:error];
+        }];
+        
+        /*GIDSignIn *signIn = [GIDSignIn sharedInstance];
+        [signIn disconnectWithCallback:^(NSError *error) {
+            [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didDisconnectWithUser:nil withError:error];
+        }];*/
+    }
 
-void GoogleSignIn_Disconnect() 
-{
-    GIDSignIn *signIn = [GIDSignIn sharedInstance];
-    [signIn disconnectWithCallback:^(NSError *error) {
-        [[GoogleSignInHandler sharedInstance] signIn:[GIDSignIn sharedInstance] didDisconnectWithUser:nil withError:error];
-    }];
-}
-
-// bool GoogleSignIn_Pending(SignInResult *result) {
-//   volatile bool ret;
-//   [resultLock lock];
-//   ret = !result->finished;
-//   [resultLock unlock];
-//   return ret;
-// }
-
-// GIDGoogleUser *GoogleSignIn_Result(SignInResult *result) {
-//   if (result && result->finished) {
-//     GIDGoogleUser *guser = [GIDSignIn sharedInstance].currentUser;
-//     return guser;
-//   }
-//   return nullptr;
-// }
-
-// int GoogleSignIn_Status(SignInResult *result) {
-//   if (result) {
-//     return result->result_code;
-//   }
-//   return kStatusCodeDeveloperError;
-// }
-
-// void GoogleSignIn_DisposeFuture(SignInResult *result) {
-//   if (result == currentResult_.get()) {
-//     currentResult_.reset(nullptr);
-//   } else {
-//     delete result;
-//   }
-// }
-
-/**
- * Private helper function to copy NSString to char*.  If the destination is
- * non-null, the contents of src are copied up to len bytes (using strncpy). The
- * then len is returned. Otherwise returns length of the string to copy + 1.
- */
-// static size_t CopyNSString(NSString *src, char *dest, size_t len) {
-//   if (dest && src && len) {
-//     const char *string = [src UTF8String];
-//     strncpy(dest, string, len);
-//     return len;
-//   }
-//   return src ? src.length + 1 : 0;
-// }
-// 
-// size_t GoogleSignIn_GetServerAuthCode(GIDGoogleUser *guser, char *buf,
-//                                       size_t len) {
-//   NSString *val = [guser serverAuthCode];
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetDisplayName(GIDGoogleUser *guser, char *buf,
-//                                    size_t len) {
-//   NSString *val = [guser.profile name];
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetEmail(GIDGoogleUser *guser, char *buf, size_t len) {
-//   NSString *val = [guser.profile email];
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetFamilyName(GIDGoogleUser *guser, char *buf, size_t len) {
-//   NSString *val = [guser.profile familyName];
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetGivenName(GIDGoogleUser *guser, char *buf, size_t len) {
-//   NSString *val = [guser.profile givenName];
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetIdToken(GIDGoogleUser *guser, char *buf, size_t len) {
-//   NSString *val = [guser.authentication idToken];
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetImageUrl(GIDGoogleUser *guser, char *buf, size_t len) {
-//   NSURL *url = [guser.profile imageURLWithDimension:128];
-//   NSString *val = url ? [url absoluteString] : nullptr;
-//   return CopyNSString(val, buf, len);
-// }
-// 
-// size_t GoogleSignIn_GetUserId(GIDGoogleUser *guser, char *buf, size_t len) {
-//   NSString *val = [guser userID];
-//   return CopyNSString(val, buf, len);
-// }
 } // extern "C"
