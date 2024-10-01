@@ -58,10 +58,29 @@ Change the {REDIRECT_SCHEME} and {REDIRECT_HOST} to what is set in your redirect
 </activity>
 ```
 
+## SET UP GOOGLE SIGN IN
+
+1. Set up your Google APIs console project for Android: https://developer.android.com/identity/sign-in/credential-manager-siwg#set-google
+2. Set up your Google APIs console project for iOS: https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id
+3. Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
+   - **Web Client ID:** the client Id you created on the 1st step (Web App).
+   - **iOS Client ID:** the client Id you created on step 2 (iOS).
+   - **iOS Scheme:** is auto generated based on the iOS Client ID.
+
+
+## (TODO) SET UP APPLE SIGN IN
+
+1. Set up your Google APIs console project for Android: https://developer.android.com/identity/sign-in/credential-manager-siwg#set-google
+2. Set up your Google APIs console project for iOS: https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id
+3. Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
+   - **Android App URL Scheme:** xxxxxxxxx.
+   - **Apple Connect Redirect URL:** xxxxxxxxx.
+   - **Apple Connect ClientID:** xxxxxxxxx.
+   - **Apple Connect Scope:** xxxxxxxxx.
+
 ## How to use
 
-Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings.
-
+Once configured, it's pretty simple to use:
 
 ```csharp
     
@@ -83,7 +102,10 @@ Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings
     silentOnly ); // if false, after a silent connect fail, this wil try a non silent connection
     
     // Google SignOut
-    SignInWithAppleOrGoogle.Google_SignOut( OnComplete );
+    SignInWithAppleOrGoogle.Google_SignOut( () => 
+    {
+        // user is signed out
+    } );
     
     
     // APPLE
@@ -96,7 +118,10 @@ Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings
     appleID ); // IOS only: optionnaly an AppleID to connect to, if defined, this will check for connection status
     
     // Apple SignOut
-    SignInWithAppleOrGoogle.Apple_SignOut( OnComplete );
+    SignInWithAppleOrGoogle.Apple_SignOut( () => 
+    {
+        // user is signed out
+    } );
     
     
 ```
@@ -104,7 +129,12 @@ Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings
 
 ### Proguard rules to add
 
+If you use proguard to minify your project you should add theses rules to be sure everything works.
+
 ```
+# plugins com.binouze
+-keep class com.binouze.** { *; } 
+
 # google Credential manager
 -if class androidx.credentials.CredentialManager
 -keep class androidx.credentials.playservices.** {

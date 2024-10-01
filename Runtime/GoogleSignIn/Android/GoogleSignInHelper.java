@@ -132,7 +132,7 @@ public class GoogleSignInHelper
             // option sign in with google
             GetGoogleIdOption gid = new GetGoogleIdOption.Builder()
                     .setServerClientId(_webClientId)
-                    .setFilterByAuthorizedAccounts(false)
+                    .setFilterByAuthorizedAccounts(silent)
                     .setAutoSelectEnabled(silent)
                     .build();
 

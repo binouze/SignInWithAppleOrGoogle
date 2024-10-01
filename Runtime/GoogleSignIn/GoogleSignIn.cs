@@ -18,9 +18,10 @@ namespace com.binouze
         #endif
            
         /// <summary>
-        /// set it to false to sho the GoogleId Credential SignIn Card instead of the SignInWith Google Form.
+        /// set it to true to show the SignInWithGoogle Form instead of the GoogleId Credential SignIn Card.
+        /// Note that SignInWithGoogle Form does not supports silent sign-in.
         /// </summary>
-        public static bool UseGoogleSignInFormOnAndroid = true;
+        public static bool UseGoogleSignInFormOnAndroid = false;
         
         public static string FAKE_UID;
         #if !UNITY_ANDROID && !UNITY_IOS
