@@ -69,7 +69,23 @@ namespace com.binouze
 
             // -- GEneral
             
-            EditorGUILayout.PropertyField(_APP_URL_SCHEME, new GUIContent("Android App URL Scheme:"));
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            
+            // -- Google
+            
+            EditorGUILayout.LabelField("SignIn with Google configuration:", EditorStyles.boldLabel);
+            EditorGUILayout.Separator();
+            
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(_Google_WebClientID,     new GUIContent("Web Client ID:"));
+            EditorGUILayout.PropertyField(_Google_IosClientID,     new GUIContent("iOS Client ID:"));
+            
+            EditorGUI.BeginDisabledGroup( true );
+            EditorGUILayout.PropertyField(_Google_IosClientScheme, new GUIContent("iOS Scheme:"));
+            EditorGUI.EndDisabledGroup();
+            EditorGUI.indentLevel--;
             
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
@@ -81,35 +97,17 @@ namespace com.binouze
             EditorGUILayout.Separator();
             //EditorGUILayout.HelpBox( "enter your AdMost applications ids here", MessageType.Info);
             
-            //EditorGUI.indentLevel++;
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(_APP_URL_SCHEME,            new GUIContent("Android App URL Scheme:"));
             EditorGUILayout.PropertyField(_URL_APPLECONNECT_REDIRECT, new GUIContent("Apple Connect Redirect URL:"));
             EditorGUILayout.PropertyField(_APPLECONNECT_CLIENT_ID,    new GUIContent("Apple Connect ClientID:"));
             EditorGUILayout.PropertyField(_APPLECONNECT_SCOPE,        new GUIContent("Apple Connect Scope:"));
-            //EditorGUI.indentLevel--;
+            EditorGUI.indentLevel--;
             
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
-
             
-            // -- Google
-            
-            EditorGUILayout.LabelField("SignIn with Google configuration:", EditorStyles.boldLabel);
-            EditorGUILayout.Separator();
-            
-            //EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_Google_WebClientID,     new GUIContent("Web Client ID:"));
-            EditorGUILayout.PropertyField(_Google_IosClientID,     new GUIContent("iOS Client ID:"));
-            
-            EditorGUI.BeginDisabledGroup( true );
-            EditorGUILayout.PropertyField(_Google_IosClientScheme, new GUIContent("iOS Scheme:"));
-            EditorGUI.EndDisabledGroup();
-            //EditorGUI.indentLevel--;
-            
-            EditorGUILayout.Separator();
-            EditorGUILayout.Separator();
-
-            EditorGUILayout.Separator();
 
             serializedObject.ApplyModifiedProperties();
         }
