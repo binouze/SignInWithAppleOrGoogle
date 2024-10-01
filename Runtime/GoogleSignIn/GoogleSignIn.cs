@@ -16,7 +16,12 @@ namespace com.binouze
         #if UNITY_EDITOR
         private static string SUCCESS_RESPONSE => "{\"result\":{\"Status\":0,\"Email\":\"fakeuser@gmail.com\",\"FamilyName\":\"FAKE\",\"UserId\":\""+FAKE_UID+"\",\"DisplayName\":\"User FAKE\",\"GivenName\":\"User\",\"PhotoUrl\":\"\"}}";
         #endif
-            
+           
+        /// <summary>
+        /// set it to false to sho the GoogleId Credential SignIn Card instead of the SignInWith Google Form.
+        /// </summary>
+        public static bool UseGoogleSignInFormOnAndroid = true;
+        
         public static string FAKE_UID;
         #if !UNITY_ANDROID && !UNITY_IOS
         static GoogleSignIn() 
@@ -97,15 +102,15 @@ namespace com.binouze
 
             using var cls = new AndroidJavaClass("com.binouze.GoogleSignInHelper");
             cls.CallStatic("configure",
-                configuration.ClientId,
+                //configuration.ClientId,          // not used on Android
                 configuration.WebClientId,
-                configuration.RequestAuthCode,
-                configuration.ForceTokenRefresh,
+                UseGoogleSignInFormOnAndroid,
+                //configuration.ForceTokenRefresh, // not used anymore since the migration to CredentialManager
                 configuration.RequestEmail,
                 configuration.RequestIdToken,
-                configuration.RequestProfile,
-                configuration.AccountName,
-                URL_SCHEME
+                configuration.RequestProfile
+                // configuration.AccountName,      // not used anymore since the migration to CredentialManager
+                // URL_SCHEME                      // not used anymore since the migration to CredentialManager
                 );
             #elif UNITY_IOS
             GoogleSignIn_Configure( configuration.ClientId,

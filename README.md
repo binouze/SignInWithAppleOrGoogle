@@ -100,3 +100,14 @@ Go to **LagoonPlugins > SignInWithAppleOrGoogle Settings** and fill the settings
     
     
 ```
+
+
+### Proguard rules to add
+
+```
+# google Credential manager
+-if class androidx.credentials.CredentialManager
+-keep class androidx.credentials.playservices.** {
+*;
+}
+```
