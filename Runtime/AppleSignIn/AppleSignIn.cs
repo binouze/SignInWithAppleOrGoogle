@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
+using System.Net;
 using UnityEngine;
 
 namespace com.binouze
@@ -120,9 +120,9 @@ namespace com.binouze
                     _instance = go.AddComponent<AppleSignIn>();
                     
                     var settings = SignInWithAppleOrGoogleSettings.LoadInstance();
-                    URL_SCHEME   = settings == null ? "" : settings.APP_URL_SCHEME;
-                    CLIENT_ID    = settings == null ? "" : settings.APPLECONNECT_CLIENT_ID;
-                    SCOPE        = settings == null ? "" : HttpUtility.UrlEncode(string.Join(' ',settings.APPLECONNECT_SCOPE));
+                    URL_SCHEME = settings == null ? "" : settings.APP_URL_SCHEME;
+                    CLIENT_ID  = settings == null ? "" : settings.APPLECONNECT_CLIENT_ID;
+                    SCOPE      = settings == null ? "" : WebUtility.UrlEncode(string.Join(' ',settings.APPLECONNECT_SCOPE));
                 }
             }
             return _instance;
