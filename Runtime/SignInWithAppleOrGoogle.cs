@@ -23,7 +23,7 @@ namespace com.binouze
         /// Enable or Disable Logs
         /// </summary>
         /// <param name="val"></param>
-        public void SetLoggingEnabled( bool val )
+        public static void SetLoggingEnabled( bool val )
         {
             PluginLogger.SetEnabled( val );
             GoogleSignIn.SetLoggingEnabled( val );
