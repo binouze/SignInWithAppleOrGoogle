@@ -9,6 +9,13 @@
     <androidPackage spec="org.json:json:20220320"/>
   </androidPackages>
 
+  <!-- iOS : Swift Package en priorite (Swift Package Manager actif dans EDM), le pod reste en repli.
+    En SPM, GoogleSignIn-iOS et firebase-ios-sdk pointent sur le meme repo GoogleUtilities :
+    SPM le dedoublonne, la ou le pod GoogleSignIn le reintroduisait a cote de Firebase en SPM. -->
+  <remoteSwiftPackage url="https://github.com/google/GoogleSignIn-iOS.git" version="9.2.0" upToNextMajor="true">
+    <swiftPackage name="GoogleSignIn" replacesPod="GoogleSignIn"/>
+  </remoteSwiftPackage>
+
   <!-- iOS Cocoapod dependencies can be specified by each iosPod element. -->
   <iosPods>
     <iosPod name="GoogleSignIn" version="~> 9.0" bitcodeEnabled="false"
