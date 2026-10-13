@@ -2,10 +2,13 @@
 <dependencies>
   <!-- See https://github.com/googlesamples/unity-jar-resolver#usage for
     how to configure dependencies -->
+  <!-- Android : versions figees (pas de +) : une version dynamique peut tirer une lib qui exige un compileSdk, un AGP
+    ou un Kotlin plus recent que ceux d'Unity, et casser le build sans changement de notre cote.
+    googleid bloque en 1.2.0 : la 1.2.1 est compilee en Kotlin 2.4, illisible par le Kotlin d'AGP 9.0 (Unity 6000.3). -->
   <androidPackages>
-    <androidPackage spec="androidx.credentials:credentials:1.5+"/>
-    <androidPackage spec="androidx.credentials:credentials-play-services-auth:1.5+"/>
-    <androidPackage spec="com.google.android.libraries.identity.googleid:googleid:1.1.1"/>
+    <androidPackage spec="androidx.credentials:credentials:1.6.0"/>
+    <androidPackage spec="androidx.credentials:credentials-play-services-auth:1.6.0"/>
+    <androidPackage spec="com.google.android.libraries.identity.googleid:googleid:1.2.0"/>
     <androidPackage spec="org.json:json:20220320"/>
   </androidPackages>
 
