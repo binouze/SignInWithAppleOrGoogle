@@ -15,6 +15,11 @@ namespace com.binouze
         public static string CLIENT_ID;
         public static string SCOPE;
 
+        /// <summary> code d'autorisation de la dernière réponse (null si absent) </summary>
+        internal static string LastAuthorizationCode;
+        /// <summary> identity token de la dernière réponse (null si absent) </summary>
+        internal static string LastIdentityToken;
+
         private static Action<string,string,string,string> OnComplete;
 
         private bool IsInit;
@@ -85,12 +90,20 @@ namespace com.binouze
             string firstName = null;
             string lastName  = null;
             var    obj       = Json.Deserialize( response );
+
+            LastAuthorizationCode = null;
+            LastIdentityToken     = null;
+
             if( obj is Dictionary<string,object> dic )
             {
                 uid       = dic.GetStringS( null, "payload", "sub" );
                 firstName = dic.GetStringS( null, "user",    "name", "firstName" );
                 lastName  = dic.GetStringS( null, "user",    "name", "lastName" );
                 email     = dic.GetStringS( null, "user",    "email" );
+
+                // code d'autorisation et identity token (Services ID APPLECONNECT_CLIENT_ID comme client_id)
+                LastAuthorizationCode = dic.GetStringS( null, "code" );
+                LastIdentityToken     = dic.GetStringS( null, "id_token" );
             }
             else
             {

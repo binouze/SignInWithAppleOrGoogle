@@ -126,6 +126,12 @@ Once configured, it's pretty simple to use:
     }, 
     appleID ); // IOS only: optionnaly an AppleID to connect to, if defined, this will check for connection status
     
+    // Apple re-authentication (ex: before an account deletion): call Apple_SignIn without appleID,
+    // the Apple sheet is always shown and user.AuthorizationCode / user.IdentityToken are filled.
+    // The authorization code (valid 5 min, single use) can be exchanged server side
+    // (https://appleid.apple.com/auth/token) then the token revoked (https://appleid.apple.com/auth/revoke).
+    // iOS: client_id = app bundle ID. Android: client_id = APPLECONNECT_CLIENT_ID, redirect_uri = URL_APPLECONNECT_REDIRECT.
+    
     // Apple SignOut
     SignInWithAppleOrGoogle.Apple_SignOut( () => 
     {

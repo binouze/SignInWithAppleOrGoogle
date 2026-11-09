@@ -24,6 +24,10 @@ namespace com.binouze
         internal static  string           AppleIDEmail;
         internal static  string           AppleIDFName;
         internal static  string           AppleIDLName;
+        /// <summary> code d'autorisation de la dernière connexion avec feuille Apple (null sinon) </summary>
+        internal static  string           AppleIDAuthorizationCode;
+        /// <summary> identity token (JWT) de la dernière connexion avec feuille Apple (null sinon) </summary>
+        internal static  string           AppleIDIdentityToken;
         internal static bool              IsConnected { get; private set; }
         private         bool              MustUpdate;
         private         IAppleAuthManager appleAuthManager;
@@ -77,11 +81,13 @@ namespace com.binouze
             AppleSignIn.GetInstance().CloseDialog();
             #endif
 
-            AppleID      = null;
-            AppleIDEmail = null;
-            AppleIDFName = null;
-            AppleIDLName = null;
-            IsConnected  = false;
+            AppleID                  = null;
+            AppleIDEmail             = null;
+            AppleIDFName             = null;
+            AppleIDLName             = null;
+            AppleIDAuthorizationCode = null;
+            AppleIDIdentityToken     = null;
+            IsConnected              = false;
         }
         
         #if UNITY_IOS
@@ -118,6 +124,10 @@ namespace com.binouze
         private void _Connect( Action OnComplete, string appleID = null )
         {
             Log( $"Connect {appleID}" );
+
+            // le code d'autorisation n'existe que pour une connexion avec feuille Apple
+            AppleIDAuthorizationCode = null;
+            AppleIDIdentityToken     = null;
 
             if( Application.isEditor )
             {
@@ -160,13 +170,15 @@ namespace com.binouze
                 AppleSignIn.GetInstance().SignIn( (uid, email, firstname, lastname) =>
                 {
                     Log( $"ConnectComplete {uid}, {email}, {firstname}, {lastname}" );
-                    
-                    IsConnected  = uid != null;
-                    AppleID      = uid;
-                    AppleIDEmail = email;
-                    AppleIDFName = firstname;
-                    AppleIDLName = lastname;
-                    
+
+                    IsConnected              = uid != null;
+                    AppleID                  = uid;
+                    AppleIDEmail             = email;
+                    AppleIDFName             = firstname;
+                    AppleIDLName             = lastname;
+                    AppleIDAuthorizationCode = uid != null ? AppleSignIn.LastAuthorizationCode : null;
+                    AppleIDIdentityToken     = uid != null ? AppleSignIn.LastIdentityToken     : null;
+
                     ConnectComplete( OnComplete );
                 });
             }
@@ -243,6 +255,12 @@ namespace com.binouze
                         AppleIDFName  = appleIdCredential.FullName?.GivenName ?? "";
                         AppleIDLName  = appleIdCredential.FullName?.FamilyName ?? "";
 
+                        // code d'autorisation et identity token (bundle ID de l'app comme client_id)
+                        AppleIDAuthorizationCode = appleIdCredential.AuthorizationCode != null
+                            ? System.Text.Encoding.UTF8.GetString( appleIdCredential.AuthorizationCode ) : null;
+                        AppleIDIdentityToken     = appleIdCredential.IdentityToken != null
+                            ? System.Text.Encoding.UTF8.GetString( appleIdCredential.IdentityToken ) : null;
+
                         IsConnected  = true;
                         
                         Log( $"DoConnect OK {AppleID}" );
@@ -287,7 +305,7 @@ namespace com.binouze
         {
             if( _instance == null ) 
             {
-                _instance = (SignInWithApple)FindObjectOfType( typeof(SignInWithApple) );
+                _instance = FindAnyObjectByType<SignInWithApple>();
                 if( _instance == null ) 
                 {
                     const string goName = "[Lagoon-Utils]";          

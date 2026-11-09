@@ -76,17 +76,20 @@ namespace com.binouze
         /// Launch Apple sign in process
         /// </summary>
         /// <param name="OnComplete"></param>
-        /// <param name="AppleID"></param>
+        /// <param name="AppleID">if set, only checks the existing credential when possible (no Apple sheet, no authorization code).
+        /// Leave null to always show the Apple sheet (re-authentication) and get <see cref="AppleSignInUser.AuthorizationCode"/>.</param>
         public static void Apple_SignIn( Action<bool, AppleSignInUser> OnComplete, string AppleID = null )
         {
             SignInWithApple.Connect( () =>
             {
                 var user = new AppleSignInUser
                 {
-                    Email     = SignInWithApple.AppleIDEmail,
-                    FirstName = SignInWithApple.AppleIDFName,
-                    LastName  = SignInWithApple.AppleIDLName,
-                    UserId    = SignInWithApple.AppleID
+                    Email             = SignInWithApple.AppleIDEmail,
+                    FirstName         = SignInWithApple.AppleIDFName,
+                    LastName          = SignInWithApple.AppleIDLName,
+                    UserId            = SignInWithApple.AppleID,
+                    AuthorizationCode = SignInWithApple.AppleIDAuthorizationCode,
+                    IdentityToken     = SignInWithApple.AppleIDIdentityToken
                 };
                 OnComplete?.Invoke( SignInWithApple.IsConnected, user );
             }, AppleID );

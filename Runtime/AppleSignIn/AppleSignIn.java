@@ -113,7 +113,12 @@ public class AppleSignIn
                     String appleId = userId;
                     */
                     
-                    SendResponseToUnity("{\"payload\":"+payload+",\"user\":"+user+"}");
+                    // code d'autorisation (à échanger côté serveur, ex : révocation) et identity token
+                    // valeurs base64url / alphanumériques : pas d'échappement JSON nécessaire
+                    String code = values.containsKey("code") ? values.get("code") : "";
+
+                    SendResponseToUnity("{\"payload\":"+payload+",\"user\":"+user
+                                        +",\"code\":\""+code+"\",\"id_token\":\""+id_token+"\"}");
                 }
                 else
                 {
