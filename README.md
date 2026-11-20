@@ -132,6 +132,14 @@ Once configured, it's pretty simple to use:
     // (https://appleid.apple.com/auth/token) then the token revoked (https://appleid.apple.com/auth/revoke).
     // iOS: client_id = app bundle ID. Android: client_id = APPLECONNECT_CLIENT_ID, redirect_uri = URL_APPLECONNECT_REDIRECT.
     
+    // Why the last Apple SignIn failed (when isConnected is false):
+    // - Apple_LastCanceled: the user closed the Apple sheet (iOS) or the sign in tab (Android) himself
+    // - Apple_LastErrorCode: iOS Apple AuthorizationErrorCode (1001 = canceled, 1000 = unknown, 1004 = failed...),
+    //   -1 for an error without code (Android, unsupported platform...), 0 when there was no error
+    // - Apple_LastErrorDescription: the error description (null when there was no error)
+    if( !isConnected && !SignInWithAppleOrGoogle.Apple_LastCanceled )
+        Debug.LogError( $"Apple SignIn failed {SignInWithAppleOrGoogle.Apple_LastErrorCode} {SignInWithAppleOrGoogle.Apple_LastErrorDescription}" );
+    
     // Apple SignOut
     SignInWithAppleOrGoogle.Apple_SignOut( () => 
     {

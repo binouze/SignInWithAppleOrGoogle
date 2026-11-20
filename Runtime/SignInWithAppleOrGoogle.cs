@@ -96,6 +96,22 @@ namespace com.binouze
         }
 
         /// <summary>
+        /// The last Apple sign in was canceled by the user himself (Apple sheet or sign in tab closed): a choice, not an error.
+        /// </summary>
+        public static bool Apple_LastCanceled => SignInWithApple.LastCanceled;
+
+        /// <summary>
+        /// Error code of the last Apple sign in: on iOS the Apple AuthorizationErrorCode (1001 = canceled, 1000 = unknown,
+        /// 1004 = failed...), -1 for an error without code (Android, unsupported platform...), 0 when there was no error.
+        /// </summary>
+        public static int Apple_LastErrorCode => SignInWithApple.LastErrorCode;
+
+        /// <summary>
+        /// Description of the last Apple sign in error (null when there was no error).
+        /// </summary>
+        public static string Apple_LastErrorDescription => SignInWithApple.LastErrorDescription;
+
+        /// <summary>
         /// Disconnect from Apple
         /// </summary>
         /// <param name="OnComplete"></param>

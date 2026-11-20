@@ -29,6 +29,33 @@ namespace com.binouze
         /// <summary> identity token (JWT) de la dernière connexion avec feuille Apple (null sinon) </summary>
         internal static  string           AppleIDIdentityToken;
         internal static bool              IsConnected { get; private set; }
+
+        /// <summary>
+        /// code de l'erreur de la dernière connexion : sur iOS l'AuthorizationErrorCode d'Apple (1001 = annulée par le
+        /// joueur, 1000 inconnue, 1004 échec…) ; -1 pour une erreur sans code (Android, plateforme non supportée…) ;
+        /// 0 sans erreur
+        /// </summary>
+        internal static int    LastErrorCode;
+        /// <summary> description de l'erreur de la dernière connexion (null sans erreur) </summary>
+        internal static string LastErrorDescription;
+        /// <summary> la dernière connexion a été annulée par le joueur lui-même : un choix, pas une erreur </summary>
+        internal static bool   LastCanceled;
+
+        private static void NoterErreur( int code, string description, bool annulee )
+        {
+            LastErrorCode        = code;
+            LastErrorDescription = description;
+            LastCanceled         = annulee;
+            Log( $"erreur {code} annulée:{annulee} {description}" );
+        }
+
+        private static void EffacerErreur()
+        {
+            LastErrorCode        = 0;
+            LastErrorDescription = null;
+            LastCanceled         = false;
+        }
+
         private         bool              MustUpdate;
         private         IAppleAuthManager appleAuthManager;
 
@@ -88,6 +115,7 @@ namespace com.binouze
             AppleIDAuthorizationCode = null;
             AppleIDIdentityToken     = null;
             IsConnected              = false;
+            EffacerErreur();
         }
         
         #if UNITY_IOS
@@ -128,6 +156,7 @@ namespace com.binouze
             // le code d'autorisation n'existe que pour une connexion avec feuille Apple
             AppleIDAuthorizationCode = null;
             AppleIDIdentityToken     = null;
+            EffacerErreur();
 
             if( Application.isEditor )
             {
@@ -138,18 +167,21 @@ namespace com.binouze
                         AppleSignIn.GetInstance().SignIn( (uid, email, firstname, lastname) =>
                         {
                             Log( $"ConnectComplete {uid}, {email}, {firstname}, {lastname}" );
-                    
+
                             IsConnected  = uid != null;
                             AppleID      = uid;
                             AppleIDEmail = email;
                             AppleIDFName = firstname;
                             AppleIDLName = lastname;
-                    
+                            if( uid == null )
+                                NoterErreur( -1, AppleSignIn.LastFailMessage, annulee: false );
+
                             ConnectComplete( OnComplete );
                         });
                     },
                     () =>
                     {
+                        NoterErreur( -1, "annulée dans l'éditeur", annulee: true );
                         OnComplete?.Invoke();
                     } );
                 return;
@@ -178,6 +210,10 @@ namespace com.binouze
                     AppleIDLName             = lastname;
                     AppleIDAuthorizationCode = uid != null ? AppleSignIn.LastAuthorizationCode : null;
                     AppleIDIdentityToken     = uid != null ? AppleSignIn.LastIdentityToken     : null;
+                    // le joueur qui ferme l'onglet de connexion annule ; tout autre échec en est un
+                    if( uid == null )
+                        NoterErreur( -1, AppleSignIn.LastFailMessage,
+                                     annulee: AppleSignIn.LastFailMessage == AppleSignIn.FAIL_TAB_HIDDEN );
 
                     ConnectComplete( OnComplete );
                 });
@@ -186,6 +222,7 @@ namespace com.binouze
             if( !IsSupported )
             {
                 Log( "Connect IOS => NOT SUPPORTED" );
+                NoterErreur( -1, "Sign in with Apple non supporté sur cet iOS", annulee: false );
                 OnComplete?.Invoke();
                 return;
             }
@@ -203,6 +240,7 @@ namespace com.binouze
             }
             #else
             Log( "Connect PLATEFORM NOT SUPPORTED" );
+            NoterErreur( -1, "plateforme non supportée", annulee: false );
             OnComplete?.Invoke();
             #endif
         }
@@ -269,17 +307,25 @@ namespace com.binouze
                     else
                     {
                         Log( $"[ConnectWithApple] DoConnect FAIL {credential}" );
+
+                        // le rappel n'était jamais appelé ici : l'appelant attendait pour toujours
+                        IsConnected = false;
+                        AppleID     = null;
+                        NoterErreur( -1, $"credential inattendu : {credential?.GetType().Name ?? "null"}", annulee: false );
+                        ConnectComplete( OnComplete );
                     }
                 },
                 error =>
                 {
                     Log( $"[ConnectWithApple] DoConnect ERROR {error?.LocalizedDescription ?? "NO ERROR DESC"}");
-                    
+
                     // Something went wrong
                     var authorizationErrorCode = error.GetAuthorizationErrorCode();
                     Log( $"ConnectWithApple ERROR: {authorizationErrorCode}" );
                     IsConnected = false;
                     AppleID     = null;
+                    NoterErreur( (int)authorizationErrorCode, error?.LocalizedDescription,
+                                 annulee: authorizationErrorCode == AuthorizationErrorCode.Canceled );
                     ConnectComplete( OnComplete );
                 });
         }
